@@ -35,5 +35,9 @@ module ForamApi
     config.autoload_paths += %W(
       #{config.root}/app/services
     )
+
+    config.generators do |g|
+      g.orm :mongoid
+    end
   end
 end
