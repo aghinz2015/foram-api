@@ -1,0 +1,18 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+
+development:
+  <<: *default
+  database: foram_api_development
+
+test:
+  <<: *default
+  database: foram_api_test
+
+production:
+  <<: *default
+  database: foram_api_production
+  username: foram_api
+  password: <%= ENV['FORAM_API_DATABASE_PASSWORD'] %>
