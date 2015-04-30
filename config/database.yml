@@ -7,7 +7,7 @@ development:
   <<: *default
   database: foram_api_development
 
-test:
+test: &test
   <<: *default
   database: foram_api_test
 
@@ -16,3 +16,6 @@ production:
   database: foram_api_production
   username: foram_api
   password: <%= ENV['FORAM_API_DATABASE_PASSWORD'] %>
+
+cucumber:
+  <<: *test
