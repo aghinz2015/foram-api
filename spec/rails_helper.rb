@@ -13,6 +13,13 @@ RSpec.configure do |config|
   config.use_transactional_fixtures = false
   config.use_transactional_examples = false
 
+  config.include Request::JsonHelpers,    type: :controller
+  config.include Request::HeadersHelpers, type: :controller
+
+  config.before(:each, type: :controller) do
+    include_default_accept_headers
+  end
+
   config.before(:suite) do
     DatabaseCleaner[:active_record].strategy = :transaction
     DatabaseCleaner[:mongoid].strategy = :truncation
