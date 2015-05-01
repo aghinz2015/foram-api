@@ -45,7 +45,7 @@ module V1
       end
 
       def foram_params
-        params[:foram]
+        params.require(:foram).permit(:kx, :ky, :kz, :tf, :phi, :beta)
       end
   end
 end
