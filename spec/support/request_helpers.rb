@@ -6,7 +6,7 @@ module Request
   end
 
   module HeadersHelpers
-    def api_header(version = 1)
+    def api_version_header(version = 1)
       request.headers['Accept'] = "application/vnd.foram.v#{version}"
     end
 
@@ -16,7 +16,7 @@ module Request
     end
 
     def include_default_accept_headers
-      api_header
+      api_version_header
       api_response_format
     end
   end

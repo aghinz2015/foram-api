@@ -40,12 +40,12 @@ module V1
 
     private
 
-      def set_foram
-        @foram = Foram.find(params[:id])
-      end
+    def set_foram
+      @foram = Foram.find(params[:id])
+    end
 
-      def foram_params
-        params.require(:foram).permit(:kx, :ky, :kz, :tf, :phi, :beta)
-      end
+    def foram_params
+      params.require(:foram).permit(:kx, :ky, :kz, :tf, :phi, :beta)
+    end
   end
 end
