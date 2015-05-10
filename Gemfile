@@ -4,6 +4,7 @@ ruby '2.2.1'
 
 gem 'rails', '4.2.1'
 gem 'rails-api'
+gem 'rack-cors'
 gem 'puma'
 gem 'pg'
 gem 'mongoid', '~> 4.0.0'
