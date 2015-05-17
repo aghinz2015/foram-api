@@ -28,3 +28,7 @@ group :test do
   gem 'shoulda-matchers'
   gem 'mongoid-rspec', '~> 2.1.0'
 end
+
+group :production do
+  gem 'rails_12factor'
+end
