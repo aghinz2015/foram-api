@@ -13,7 +13,10 @@ RSpec.configure do |config|
   config.use_transactional_fixtures = false
   config.use_transactional_examples = false
 
-  config.include Request::JsonHelpers,    type: :controller
+  %i(request controller).each do |type|
+    config.include Request::JsonHelpers, type: type
+  end
+
   config.include Request::HeadersHelpers, type: :controller
 
   config.before(:each, type: :controller) do

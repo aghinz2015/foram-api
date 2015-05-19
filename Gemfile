@@ -12,11 +12,11 @@ gem 'active_model_serializers', '~> 0.8.0'
 
 group :development do
   gem 'spring'
-  gem 'pry'
-  gem 'pry-rails'
 end
 
 group :development, :test do
+  gem 'pry'
+  gem 'pry-rails'
   gem 'rspec-rails', '~> 3.0'
 end
 
