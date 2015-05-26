@@ -23,8 +23,6 @@ module V1
     end
 
     def update
-      @foram = Foram.find(params[:id])
-
       if @foram.update(foram_params)
         head :no_content
       else
