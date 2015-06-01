@@ -1,4 +1,4 @@
-require "rails_helper"
+require 'rails_helper'
 
 describe Foram do
   include Mongoid::Matchers
@@ -7,7 +7,7 @@ describe Foram do
 
   it { should have_fields(*FIELDS) }
 
-  describe "validations" do
+  describe 'validations' do
     FIELDS.each do |field|
       it { should validate_presence_of field }
     end

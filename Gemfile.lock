@@ -205,3 +205,6 @@ DEPENDENCIES
   shoulda-matchers
   spring
   timecop
+
+BUNDLED WITH
+   1.10.3
