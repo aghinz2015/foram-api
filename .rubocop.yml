@@ -1,0 +1,23 @@
+LineLength:
+  Max: 125
+
+StringLiterals:
+  EnforcedStyle: single_quotes
+
+ClassLength:
+  Enabled: false
+
+MethodLength:
+  Enabled: false
+
+Documentation:
+  Enabled: false
+
+AllCops:
+  Excludes:
+    - db/**
+    - script/**
+    - config/initializers/secret_token.rb
+  Includes:
+    - Rakefile
+    - config.ru
