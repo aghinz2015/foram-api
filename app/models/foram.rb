@@ -1,12 +1,12 @@
 class Foram
   include Mongoid::Document
+  embeds_one :genotype
 
-  field :kx,   type: Float
-  field :ky,   type: Float
-  field :kz,   type: Float
-  field :tf,   type: Float
-  field :phi,  type: Float
-  field :beta, type: Float
-
-  validates :kx, :ky, :kz, :tf, :phi, :beta, presence: true
+  field :className,       type: String
+  field :deathStepNo,     type: Integer
+  field :age,             type: Integer
+  field :x,               type: Integer
+  field :y,               type: Integer
+  field :z,               type: Integer
+  field :simulationStart, type: DateTime
 end
