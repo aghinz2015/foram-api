@@ -12,24 +12,6 @@ module V1
       render json: @foram, root: true
     end
 
-    def create
-      @foram = Foram.new(foram_params)
-
-      if @foram.save
-        render json: @foram, status: :created, location: @foram
-      else
-        render json: @foram.errors, status: :unprocessable_entity
-      end
-    end
-
-    def update
-      if @foram.update(foram_params)
-        head :no_content
-      else
-        render json: @foram.errors, status: :unprocessable_entity
-      end
-    end
-
     def destroy
       @foram.destroy
 
