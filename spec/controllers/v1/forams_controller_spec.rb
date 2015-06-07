@@ -7,7 +7,7 @@ describe V1::ForamsController do
     before { get :show, id: foram.id }
 
     it 'renders json representation of existing foram record' do
-      expect(json_response[:foram][:kx]).to eq foram.kx
+      expect(json_response[:foram][:genotype][:growthFactor]).to eq foram.genotype.growthFactor
     end
 
     it { should respond_with 200 }

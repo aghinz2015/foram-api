@@ -9,7 +9,7 @@ module V1
     end
 
     def show
-      render json: @foram
+      render json: @foram, root: true
     end
 
     def create
