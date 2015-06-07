@@ -17,7 +17,6 @@ Fabricator(:genotype) do
 end
 
 Fabricator(:foram) do
-  genotype
   className         "pl.edu.agh.evolutus.statistics.model.ForamFossil"
   deathStepNo       { rand(300) + 100 }
   age               { rand(10) + 5 }
@@ -25,4 +24,8 @@ Fabricator(:foram) do
   y                 { rand(10) }
   z                 { rand(10) }
   simulationStart   { Time.now - rand(50) }
+
+  after_create do |foram|
+    Fabricate(:genotype, foram: foram)
+  end
 end
