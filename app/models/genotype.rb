@@ -2,19 +2,23 @@ class Genotype
   include Mongoid::Document
   embedded_in :foram
 
-  field :haploidJuvenileVolumeFactor, type: Float
-  field :haploidFirstChamberRadius,   type: Float
-  field :minAdultAge,                 type: Float
-  field :minAdultVolume,              type: Float
-  field :wallThicknessFactor,         type: Float
-  field :maxEnergy,                   type: Float
-  field :diploidFirstChamberRadius,   type: Float
-  field :diploidJuvenileVolumeFactor, type: Float
-  field :minEnergy,                   type: Float
-  field :metabolicEffectiveness,      type: Float
-  field :translationFactor,           type: Float
-  field :growthFactor,                type: Float
-  field :rotationAngle,               type: Float
-  field :deviationAngle,              type: Float
-  field :minMetabolicEffectiveness,   type: Float
+  field :haploidJuvenileVolumeFactor,  type: Gene
+  field :haploidFirstChamberRadius,    type: Gene
+  field :minAdultAge,                  type: Gene
+  field :chamberGrowthCostFactor,      type: Gene
+  field :energyDemandPerChamber,       type: Gene
+  field :minAdultVolume,               type: Gene
+  field :wallThicknessFactor,          type: Gene
+  field :minEnergy,                    type: Gene
+  field :metabolicEffectiveness,       type: Gene
+  field :diploidJuvenileVolumeFactor,  type: Gene
+  field :diploidFirstChamberRadius,    type: Gene
+  field :hibernationEnergyConsumption, type: Gene
+  field :translationFactor,            type: Gene
+  field :growthFactor,                 type: Gene
+  field :hibernationEnergyLevel,       type: Gene
+  field :rotationAngle,                type: Gene
+  field :deviationAngle,               type: Gene
+  field :minMetabolicEffectiveness,    type: Gene
+  field :maxEnergyPerChamber,          type: Gene
 end

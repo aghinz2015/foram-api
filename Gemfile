@@ -18,11 +18,13 @@ group :development, :test do
   gem 'pry'
   gem 'pry-rails'
   gem 'rspec-rails', '~> 3.0'
+  gem 'pry-rails'
 end
 
 group :test do
   gem 'cucumber-rails', :require => false
   gem 'fabrication'
+  gem 'faker'
   gem 'database_cleaner'
   gem 'timecop'
   gem 'shoulda-matchers'

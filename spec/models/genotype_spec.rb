@@ -1,13 +1,11 @@
-require "rails_helper"
+require 'rails_helper'
 
 describe Genotype do
   include Mongoid::Matchers
 
-  it { should have_fields(:haploidFirstChamberRadius, :haploidJuvenileVolumeFactor) }
-  it { should have_fields(:diploidFirstChamberRadius, :diploidJuvenileVolumeFactor) }
-  it { should have_fields(:minAdultAge, :minAdultVolume, :minEnergy, :maxEnergy) }
-  it { should have_fields(:metabolicEffectiveness, :minMetabolicEffectiveness) }
-
-  it { should have_fields(:wallThicknessFactor, :translationFactor, :growthFactor) }
-  it { should have_fields(:rotationAngle, :deviationAngle) }
+  it { should have_fields(:haploidJuvenileVolumeFactor, :haploidFirstChamberRadius, :minAdultAge, :minEnergy) }
+  it { should have_fields(:chamberGrowthCostFactor, :energyDemandPerChamber, :minAdultVolume, :wallThicknessFactor) }
+  it { should have_fields(:metabolicEffectiveness, :diploidJuvenileVolumeFactor, :diploidFirstChamberRadius) }
+  it { should have_fields(:translationFactor, :growthFactor, :hibernationEnergyLevel, :hibernationEnergyConsumption) }
+  it { should have_fields(:rotationAngle, :deviationAngle, :minMetabolicEffectiveness, :maxEnergyPerChamber) }
 end
