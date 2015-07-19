@@ -29,6 +29,7 @@ module ForamApi
 
     config.autoload_paths += %W(
       #{config.root}/app/services
+      #{config.root}/lib/filters
     )
 
     config.generators do |g|
