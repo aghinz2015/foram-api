@@ -1,0 +1,78 @@
+models:
+  foram:
+    haploidJuvenileVolumeFactor:
+      range:
+        min: 0.0
+        max: 10.0
+    haploidFirstChamberRadius:
+      range:
+        min: 0.0
+        max: 10.0
+    chamberGrowthCostFactor:
+      range:
+        min: 0.0
+        max: 1.0
+    energyDemandPerChamber:
+      range:
+        min: 0.0
+        max: 1.0
+    minAdultVolume:
+      range:
+        min: 10
+        max: 100
+    minAdultAge:
+      range:
+        min: 100
+        max: 900
+    wallThicknessFactor:
+      range:
+        min: 0.0
+        max: 0.04
+    minEnergy:
+      range:
+        min: 5
+        max: 50
+    metabolicEffectiveness:
+      range:
+        min: 0.0
+        max: 1.0
+    diploidJuvenileVolumeFactor:
+      range:
+        min: 0.0
+        max: 10.0
+    diploidFirstChamberRadius:
+      range:
+        min: 0.0
+        max: 10.0
+    hibernationEnergyConsumption:
+      range:
+        min: 0.1
+        max: 1.0
+    translationFactor:
+      range:
+        min: -1.0
+        max: 1.0
+    growthFactor:
+      range:
+        min: 1.0
+        max: 2.0
+    hibernationEnergyLevel:
+      range:
+        min: 1.0
+        max: 10.0
+    rotationAngle:
+      range:
+        min: -3.1415
+        max: 3.1415
+    deviationAngle:
+      range:
+        min: -3.1415
+        max: 3.1415
+    minMetabolicEffectiveness:
+      range:
+        min: 1.0
+        max: 10.0
+    maxEnergyPerChamber:
+      range:
+        min: 1.0
+        max: 10.0
