@@ -2,11 +2,11 @@ class ForamFilter
   include ActiveModel::Model
   include RangedFilter
 
-  ranged_attribute deviation_angle:         'genotype.deviationAngle',
-                   growth_factor:           'genotype.growthFactor',
-                   rotation_angle:          'genotype.rotationAngle',
-                   translation_factor:      'genotype.translationFactor',
-                   wall_thickness_factor:   'genotype.wallThicknessFactor'
+  ranged_attribute deviation_angle:         'genotype.deviationAngle.0',
+                   growth_factor:           'genotype.growthFactor.0',
+                   rotation_angle:          'genotype.rotationAngle.0',
+                   translation_factor:      'genotype.translationFactor.0',
+                   wall_thickness_factor:   'genotype.wallThicknessFactor.0'
 
   def forams
     ranged_attributes_scope(Foram.all)
