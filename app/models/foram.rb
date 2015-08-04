@@ -15,4 +15,8 @@ class Foram
   field :simulationStart, type: DateTime
 
   alias_underscored_attributes
+
+  def generation
+    deathStepNo - age
+  end
 end
