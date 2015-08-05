@@ -10,6 +10,7 @@ set :rbenv_ruby, '2.2.1'
 set :branch, ENV['BRANCH_NAME'] || :master
 
 set :linked_files, fetch(:linked_files, []).push(
+  '.env',
   'config/database.yml',
   'config/mongoid.yml',
   'config/secrets.yml'
