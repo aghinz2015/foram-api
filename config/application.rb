@@ -29,7 +29,7 @@ module ForamApi
 
     config.autoload_paths += %W(
       #{config.root}/app/services
-      #{config.root}/lib/filters
+      #{config.root}/lib
     )
 
     config.generators do |g|
@@ -43,5 +43,7 @@ module ForamApi
       g.fixture_replacement :fabrication
       g.orm :mongoid
     end
+
+    config.exceptions_app = routes
   end
 end
