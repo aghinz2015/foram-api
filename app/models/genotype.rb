@@ -1,5 +1,6 @@
 class Genotype
   include Mongoid::Document
+
   embedded_in :foram
 
   field :haploidJuvenileVolumeFactor,  type: Gene
@@ -21,4 +22,6 @@ class Genotype
   field :deviationAngle,               type: Gene
   field :minMetabolicEffectiveness,    type: Gene
   field :maxEnergyPerChamber,          type: Gene
+
+  alias_underscored_attributes
 end

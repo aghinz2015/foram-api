@@ -1,5 +1,6 @@
 class Foram
   include Mongoid::Document
+
   embeds_one :genotype
 
   field :className,       type: String
@@ -12,4 +13,6 @@ class Foram
   field :y,               type: Integer
   field :z,               type: Integer
   field :simulationStart, type: DateTime
+
+  alias_underscored_attributes
 end
