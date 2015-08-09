@@ -9,15 +9,13 @@ class GenerationMetricCalculator
   end
 
   def generation_metrics
-    @metrics ||= generate_metrics
+    @metrics ||= begin
+      group_by_generation
+      calculate_metrics
+    end
   end
 
   private
-
-  def generate_metrics
-    group_by_generation
-    calculate_metrics
-  end
 
   def calculate_metrics
     metrics_hash = {}
@@ -25,7 +23,6 @@ class GenerationMetricCalculator
       metrics_hash[number] = { attributes: generation_metrics_hash(forams) }
       metrics_hash[number][:size] = forams.size
     end
-    metrics_hash = metrics_hash.sort.to_h
     metrics_hash[:global_averages] = calculate_global_averages(metrics_hash)
     metrics_hash
   end
@@ -34,10 +31,10 @@ class GenerationMetricCalculator
     @generations = {}
 
     forams.each do |foram|
-      generation = foram.generation
-      @generations[generation] ||= []
-      @generations[generation] << foram
+      @generations[foram.generation] ||= []
+      @generations[foram.generation] << foram
     end
+    @generations = @generations.sort.to_h
   end
 
   def generation_metrics_hash(forams)

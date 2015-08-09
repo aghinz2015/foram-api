@@ -6,7 +6,7 @@ class GenerationSummaryGenerator
   end
 
   def summary
-    @summary ||= generate_summary
+    { generations: @summary ||= generate_summary }
   end
 
   private 

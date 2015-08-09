@@ -17,6 +17,6 @@ class Foram
   alias_underscored_attributes
 
   def generation
-    deathStepNo - age
+    @generation ||= deathStepNo - age
   end
 end

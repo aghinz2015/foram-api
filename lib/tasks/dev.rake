@@ -7,9 +7,9 @@ namespace :dev do
     task populate: :environment do
       Foram.destroy_all
 
-      Fabricate.times(10, :foram) do
-        deathStepNo Faker::Number.between(30, 80)
-        age         Faker::Number.between(5, 30)
+      Fabricate.times(1000, :foram) do
+        deathStepNo Faker::Number.between(30, 50)
+        age         Faker::Number.between(5, 15)
       end
     end
   end
