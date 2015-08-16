@@ -2,12 +2,9 @@
 lock '3.4.0'
 
 set :application, 'foram_api'
-set :repo_url, 'ssh://git@stash.iisg.agh.edu.pl:7999/pp2015/foram_api.git'
-
-set :rbenv_type, :user # or :system, depends on your rbenv setup
-set :rbenv_ruby, '2.2.1'
-
-set :branch, ENV['BRANCH_NAME'] || :master
+set :repo_url,    'ssh://git@stash.iisg.agh.edu.pl:7999/pp2015/foram_api.git'
+set :branch,      ENV['BRANCH_NAME'] || :master
+set :default_env, { path: "/opt/ruby/bin:$PATH" }
 
 set :linked_files, fetch(:linked_files, []).push(
   '.env',
@@ -23,4 +20,13 @@ set :linked_dirs, fetch(:linked_dirs, []).push(
   'tmp/sockets'
 )
 
-set :default_env, { path: "/opt/ruby/bin:$PATH" }
+# rbenv
+
+set :rbenv_type, :user # or :system, depends on your rbenv setup
+set :rbenv_ruby, '2.2.1'
+
+# slack
+
+set :slack_webhook,  ENV['SLACK_WEBHOOK_URL']
+set :slack_channel,  '#hooks'
+set :slack_username, 'Deployer'
