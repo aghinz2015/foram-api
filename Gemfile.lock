@@ -38,6 +38,7 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
+    api-pagination (4.1.1)
     arel (6.0.0)
     bson (2.3.0)
     builder (3.2.2)
@@ -94,6 +95,9 @@ GEM
       activesupport (>= 4.1.0)
     i18n (0.7.0)
     json (1.8.2)
+    kaminari (0.16.3)
+      actionpack (>= 3.0.0)
+      activesupport (>= 3.0.0)
     loofah (2.0.2)
       nokogiri (>= 1.5.9)
     mail (2.6.3)
@@ -221,6 +225,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers (~> 0.8.0)
+  api-pagination
   capistrano-bundler (~> 1.1.4)
   capistrano-rails (~> 1.1.3)
   capistrano-rbenv (~> 2.0.3)
@@ -230,6 +235,7 @@ DEPENDENCIES
   dotenv-rails
   fabrication
   faker
+  kaminari
   mongoid (~> 4.0.0)
   mongoid-rspec (~> 2.1.0)
   pg

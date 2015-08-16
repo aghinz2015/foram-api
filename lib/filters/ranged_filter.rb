@@ -7,7 +7,7 @@ module RangedFilter
     conditions = {}
     self.class.ranged_attributes.each do |(attribute, field, operator)|
       value = send(attribute)
-      conditions.deep_merge!(field => { operator => value }) if value.present?
+      conditions.deep_merge!(field => { operator => value.to_f }) if value.present?
     end
     scope.where(conditions)
   end
