@@ -1,3 +1,6 @@
+Style/GuardClause:
+  Enabled: false
+
 LineLength:
   Max: 125
 
