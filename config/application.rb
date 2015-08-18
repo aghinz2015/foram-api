@@ -21,7 +21,8 @@ module ForamApi
 
         resource '*',
                  headers: :any,
-                 methods: %i(get post put patch delete options)
+                 methods: %i(get post put patch delete options),
+                 expose: %w(Link Total Per-Page)
       end
     end
 
