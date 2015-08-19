@@ -1,6 +1,6 @@
 class ForamFilter
   include ActiveModel::Model
-  include RangedFilter
+  include ::Filters::RangedFilter
 
   ranged_attribute deviation_angle:         'genotype.deviationAngle.0',
                    growth_factor:           'genotype.growthFactor.0',

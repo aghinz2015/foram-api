@@ -1,4 +1,4 @@
-module RangedFilter
+module Filters::RangedFilter
   def self.included(base)
     base.extend(ClassMethods)
   end
