@@ -6,10 +6,10 @@ describe GenerationMetricCalculator do
     
     let(:forams) do 
       [
-        Fabricate(:foram, x: 1, y: 2, z: 3, age: 20, deathStepNo: 30),
-        Fabricate(:foram, x: 2, y: 3, z: 4, age: 20, deathStepNo: 30),
-        Fabricate(:foram, x: 3, y: 4, z: 5, age: 20, deathStepNo: 30),
-        Fabricate(:foram, x: 4, y: 5, z: 6, age: 20, deathStepNo: 35)
+        Fabricate(:foram, x: 1, y: 2, z: 3, age: 20, death_step_no: 30),
+        Fabricate(:foram, x: 2, y: 3, z: 4, age: 20, death_step_no: 30),
+        Fabricate(:foram, x: 3, y: 4, z: 5, age: 20, death_step_no: 30),
+        Fabricate(:foram, x: 4, y: 5, z: 6, age: 20, death_step_no: 35)
       ]
      end
 

@@ -8,7 +8,7 @@ namespace :dev do
       Foram.destroy_all
 
       Fabricate.times(1000, :foram) do
-        deathStepNo Faker::Number.between(30, 50)
+        death_step_no Faker::Number.between(30, 50)
         age         Faker::Number.between(5, 15)
       end
     end
