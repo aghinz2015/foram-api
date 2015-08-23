@@ -18,10 +18,6 @@ module V1
       @foram = Foram.find(params[:id])
     end
 
-    def foram_params
-      params.require(:foram).permit(:kx, :ky, :kz, :tf, :phi, :beta)
-    end
-
     def foram_filter_params
       params.permit(:deviation_angle_min, :deviation_angle_max,
                     :growth_factor_min, :growth_factor_max,
