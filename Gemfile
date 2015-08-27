@@ -12,6 +12,7 @@ gem 'mongoid', '~> 4.0.0'
 gem 'active_model_serializers', '~> 0.8.0'
 gem 'kaminari'
 gem 'api-pagination'
+gem 'bcrypt'
 
 group :development do
   gem 'spring'
