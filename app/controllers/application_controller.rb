@@ -1,9 +1,10 @@
 class ApplicationController < ActionController::API
+  include ActionController::HttpAuthentication::Token
 
   protected
 
-  def authenticate_user! #TODO think about authenticate_with_http_token
-    token, options = ActionController::HttpAuthentication::Token.token_and_options(request)
+  def authenticate_user!
+    token, options = token_and_options(request)
 
     user_email = options.present? ? options[:email] : nil
     user = User.where(email: user_email).first

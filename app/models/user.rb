@@ -18,6 +18,7 @@ class User
                                length: { maximum: 255 }
   validates :email, format: { with: EMAIL_REGEXP }
   validates :password, length: { minimum: 6 }
+  validates :password_confirmation, presence: true
 
   def generate_authentication_token
     loop do

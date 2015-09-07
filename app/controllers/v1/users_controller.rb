@@ -1,15 +1,22 @@
-module V1::Users
-  class RegistrationsController < ApplicationController
+module V1
+  class UsersController < ApplicationController
     before_action :authenticate_user!, except: :create
 
     def create
-      user = User.new(create_params)
+      user = User.new(user_params)
 
       if user.save
-        @current_user = user
         render json: user, serializer: Sessions::UserSerializer, status: :created
       else
         render json: user.errors, status: :unprocesable_entity
+      end
+    end
+
+    def update
+      if @current_user.update(user_params)
+        render json: @current_user
+      else
+        render json: @current_user.errors, status: :unprocesable_entity
       end
     end
 
@@ -24,7 +31,7 @@ module V1::Users
 
     private
 
-    def create_params
+    def user_params
       params.require(:user).permit(:email, :username, :password,
                                    :password_confirmation)
     end
