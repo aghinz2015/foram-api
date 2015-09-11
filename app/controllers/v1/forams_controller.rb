@@ -1,6 +1,7 @@
 module V1
   class ForamsController < ApplicationController
     before_action :set_foram, only: :show
+    before_action :authenticate_user!
 
     def index
       forams = ForamFilter.new(foram_filter_params).forams

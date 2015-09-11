@@ -17,8 +17,14 @@ class User
                                uniqueness: { case_sensitive: false },
                                length: { maximum: 255 }
   validates :email, format: { with: EMAIL_REGEXP }
-  validates :password, length: { minimum: 6 }
-  validates :password_confirmation, presence: true
+  validates :password, length: { minimum: 6 }, allow_nil: true
+
+  def change_authentication_token
+    generate_authentication_token
+    self.save
+  end
+
+  private
 
   def generate_authentication_token
     loop do

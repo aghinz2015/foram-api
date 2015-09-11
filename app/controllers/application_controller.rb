@@ -4,10 +4,11 @@ class ApplicationController < ActionController::API
   protected
 
   def authenticate_user!
-    token, options = token_and_options(request)
+    token_and_options = token_and_options(request)
+    return unauthenticated! if token_and_options.nil?
 
-    user_email = options.present? ? options[:email] : nil
-    user = User.where(email: user_email).first
+    token, options = token_and_options
+    user = User.where(email: options[:email]).first
 
     if user && ActiveSupport::SecurityUtils.secure_compare(user.authentication_token, token)
       @current_user = user

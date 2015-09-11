@@ -1,19 +1,19 @@
-module V1::Users
+module V1
   class SessionsController < ApplicationController
     before_action :authenticate_user!, except: :create
 
     def create
-      user = User.find_by(email: create_params[:email])
+      user = User.where(email: create_params[:email]).first
 
       if user && user.authenticate(create_params[:password])
-        render json: user, serializer: Sessions::UserSerializer, status: :created
+        render json: user, serializer: Users::SessionSerializer, status: :created
       else
-        head :forbidden
+        render json: { error: 'Email or password is incorrect' }, status: :forbidden
       end
     end
 
     def destroy
-      @current_user.generate_authentication_token
+      @current_user.change_authentication_token
       @current_user = nil
 
       head :ok
