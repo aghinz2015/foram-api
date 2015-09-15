@@ -19,11 +19,7 @@ module V1
     end
 
     def foram_filter_params
-      params.permit(:deviation_angle_min, :deviation_angle_max,
-                    :growth_factor_min, :growth_factor_max,
-                    :rotation_angle_min, :rotation_angle_max,
-                    :translation_factor_min, :translation_factor_max,
-                    :wall_thickness_factor_min, :wall_thickness_factor_max)
+      params.permit(ForamFilter.params)
     end
   end
 end
