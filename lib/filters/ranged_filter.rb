@@ -16,10 +16,10 @@ module Filters::RangedFilter
     def ranged_attribute(names)
       @ranged_attributes ||= []
       names.each_pair do |name, field|
-        { "_min" => "$gte", "_max" => "$lte" }.each_pair do |suffix, operator|
+        { '_min' => '$gte', '_max' => '$lte' }.each_pair do |suffix, operator|
           attribute = name.to_s + suffix
           attr_accessor attribute
-          @ranged_attributes.push([attribute, field, operator])
+          @ranged_attributes.push([attribute.to_sym, field, operator])
         end
       end
     end
