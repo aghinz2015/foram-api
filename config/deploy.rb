@@ -2,7 +2,7 @@
 lock '3.4.0'
 
 set :application, 'foram_api'
-set :repo_url,    'ssh://git@stash.iisg.agh.edu.pl:7999/pp2015/foram_api.git'
+set :repo_url,    'https://github.com/aghinz2015/foram-api.git'
 set :branch,      ENV['BRANCH_NAME'] || :master
 set :default_env, { path: "/opt/ruby/bin:$PATH" }
 
