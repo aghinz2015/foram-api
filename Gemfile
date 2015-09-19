@@ -14,6 +14,9 @@ gem 'kaminari'
 gem 'api-pagination'
 gem 'bcrypt'
 
+gem 'fabrication'
+gem 'faker'
+
 group :development do
   gem 'spring'
   gem 'capistrano-rails', '~> 1.1.3',   require: false
@@ -31,8 +34,6 @@ end
 
 group :test do
   gem 'cucumber-rails', require: false
-  gem 'fabrication'
-  gem 'faker'
   gem 'database_cleaner'
   gem 'timecop'
   gem 'shoulda-matchers'
