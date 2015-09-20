@@ -11,6 +11,8 @@ class User
   field :password_digest,         type: String
   field :authentication_token,    type: String
 
+  embeds_many :mongo_sessions
+
   has_secure_password
 
   validates :email, :username, presence: true,
