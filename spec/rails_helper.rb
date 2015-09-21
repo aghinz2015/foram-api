@@ -18,6 +18,8 @@ RSpec.configure do |config|
   end
 
   config.include Request::HeadersHelpers, type: :controller
+  config.include MongoHelpers
+  config.include UserHelpers::LoggingIn
 
   config.before(:each, type: :controller) do
     include_default_accept_headers
