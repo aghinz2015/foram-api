@@ -13,7 +13,7 @@ gem 'active_model_serializers', '~> 0.8.0'
 gem 'kaminari'
 gem 'api-pagination'
 gem 'bcrypt'
-
+gem 'redis-rails'
 gem 'fabrication'
 gem 'faker'
 

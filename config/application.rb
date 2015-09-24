@@ -46,5 +46,9 @@ module ForamApi
     end
 
     config.exceptions_app = routes
+
+    config.cache_store = :redis_store, { host: 'localhost',
+                                         port: '6379',
+                                         namespace: 'cache' }
   end
 end

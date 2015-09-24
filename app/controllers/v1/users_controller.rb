@@ -12,16 +12,16 @@ module V1
     end
 
     def update
-      if @current_user.update(user_params)
-        render json: @current_user
+      if current_user.update(user_params)
+        render json: current_user
       else
-        render json: @current_user.errors, status: :unprocessable_entity
+        render json: current_user.errors, status: :unprocessable_entity
       end
     end
 
     def destroy
-      if @current_user.authenticate(params[:password])
-        @current_user.destroy
+      if current_user.authenticate(params[:password])
+        current_user.destroy
         head :no_content
       else
         head :forbidden
