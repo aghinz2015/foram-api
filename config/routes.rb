@@ -6,7 +6,7 @@ Rails.application.routes.draw do
       delete  'user/logout',   to: 'sessions#destroy'
 
       resource :user, only: [:create, :update, :destroy] do
-        resources :mongo_sessions, only: [:index]
+        resources :mongo_sessions
       end
       resources :forams, only: [:show, :index]
       resources :generations, only: :index

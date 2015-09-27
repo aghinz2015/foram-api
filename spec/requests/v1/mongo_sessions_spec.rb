@@ -45,8 +45,8 @@ describe V1::MongoSessionsController do
 
         let(:expected_json) do
           { mongo_sessions: [
-              { id: sessions[0].id.to_s, name: "A", database: "A_db", hosts: ["127.0.0.1:27800"], username: "tester" },
-              { id: sessions[1].id.to_s, name: "B", database: "B_db", hosts: ["256.46.5.9:27800"], username: "test" }
+              { id: sessions[0].id.to_s, name: "A", database: "A_db", hosts: ["127.0.0.1:27800"], username: "tester", active: nil },
+              { id: sessions[1].id.to_s, name: "B", database: "B_db", hosts: ["256.46.5.9:27800"], username: "test", active: nil }
             ]
           }
         end

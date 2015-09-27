@@ -8,10 +8,14 @@ class MongoSession
   field :hosts,              type: Array
   field :username,           type: String
   field :encrypted_password, type: String
+  field :active,             type: Boolean
   attr_writer :password
 
   validates :name, :database, :hosts, :username, :encrypted_password, presence: true
   validates :name, uniqueness: { scope: :user }
+
+  after_save :deactivate_other_sessions, if: ->(session) { session.active && session.active_changed? }
+  scope :active, -> { where(active: true) }
 
   def password=(value)
     self.encrypted_password = Encryptor.new.encrypt(value)
@@ -34,5 +38,9 @@ class MongoSession
       username: username,
       password: Encryptor.new.decrypt(encrypted_password)
     }
+  end
+
+  def deactivate_other_sessions
+    user.mongo_sessions.active.where(:id.ne => id).update_all(active: false)
   end
 end

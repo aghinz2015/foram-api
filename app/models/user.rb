@@ -12,7 +12,6 @@ class User
   field :authentication_token,    type: String
 
   embeds_many :mongo_sessions
-
   has_secure_password
 
   validates :email, :username, presence: true,
@@ -26,6 +25,13 @@ class User
   def change_authentication_token
     generate_authentication_token
     save
+  end
+
+  def active_mongo_session
+    @active_mongo_session ||= begin
+      session_id = mongo_sessions.active.last.try { |session| session.id.to_s }
+      mongo_sessions.find(session_id) if session_id
+    end
   end
 
   private
