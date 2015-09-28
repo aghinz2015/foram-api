@@ -20,6 +20,11 @@ class GenerationSummaryGenerator
   end
 
   def metrics_calculator
-    @metrics_calculator ||= GenerationMetricCalculator.new(Foram.all, grouping_parameter, genes, start: start, stop: stop)
+    @metrics_calculator ||= begin
+      criteria = {}
+      criteria["#{grouping_parameter}_min"] = start if start
+      criteria["#{grouping_parameter}_max"] = stop if stop
+      GenerationMetricCalculator.new(ForamFilter.new(criteria).forams, grouping_parameter, genes)
+    end
   end
 end

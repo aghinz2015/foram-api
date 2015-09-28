@@ -29,7 +29,8 @@ class ForamFilter
     y: 'y',
     z: 'z',
     death_step_no: 'deathStepNo',
-    age: 'age'
+    age: 'age',
+    generation: 'generation'
 
   boolean_attribute :mongoid,
     is_diploid: 'isDiploid'

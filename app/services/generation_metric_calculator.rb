@@ -1,9 +1,8 @@
 class GenerationMetricCalculator
-  attr_reader :forams, :grouping_parameter, :genes, :start, :stop, :generations
+  attr_reader :forams, :grouping_parameter, :genes, :generations
 
   PRECISION = 2
   ATTRIBUTE_TYPES = %i(effective first_set second_set)
-  CALCULATED_STATISTICS = %i(min max average standard_deviation)
 
   def initialize(forams, grouping_parameter, genes, start: nil, stop: nil)
     @forams = forams
@@ -28,18 +27,10 @@ class GenerationMetricCalculator
 
     forams.each do |foram|
       generation = foram.send(param).to_i
-      if in_bounds?(generation)
-        @generations[generation] ||= []
-        @generations[generation] << foram
-      end
+      @generations[generation] ||= []
+      @generations[generation] << foram
     end
     @generations = @generations.sort.to_h
-  end
-
-  def in_bounds?(generation)
-    higher_than_start = start ? generation >= start : true
-    lower_than_stop = stop ? generation <= stop : true
-    higher_than_start && lower_than_stop
   end
 
   def calculate_metrics
@@ -60,16 +51,28 @@ class GenerationMetricCalculator
   end
 
   def generation_metrics_hash(forams)
-    generation_hash = {}
+    generation_hash = hash_with_initial_values(forams)
+    fill_with_attributes_dependent_on_each_foram(generation_hash, forams)
+    fill_with_attributes_dependent_on_whole_generation(generation_hash, forams)
+
+    generation_hash
+  end
+
+  def hash_with_initial_values(forams)
+    result = {}
 
     genes.each do |attribute|
-      generation_hash[attribute] = {}
+      result[attribute] = {}
       ATTRIBUTE_TYPES.each do |type|
         value = forams.first.genotype.send(attribute).send(type)
-        generation_hash[attribute][type] = { min: value, max: value, sum: 0, sum_of_squares: 0, size: 0 }
+        result[attribute][type] = { min: value, max: value, sum: 0, sum_of_squares: 0, size: 0 }
       end
     end
 
+    result
+  end
+
+  def fill_with_attributes_dependent_on_each_foram(generation_hash, forams)
     forams.each do |foram|
       genotype = foram.genotype
       genes.each do |attribute|
@@ -87,40 +90,47 @@ class GenerationMetricCalculator
         end
       end
     end
+  end
 
+  def fill_with_attributes_dependent_on_whole_generation(generation_hash, forams)
     genes.each do |attribute|
       ATTRIBUTE_TYPES.each do |type|
         attribute_hash = generation_hash[attribute][type]
 
         size = attribute_hash[:size]
         if size > 0
-          attribute_hash[:average] = (attribute_hash[:sum].to_f / size)
-          variance = (attribute_hash[:sum_of_squares].to_f / size) - attribute_hash[:average] * attribute_hash[:average]
-          attribute_hash[:standard_deviation] = Math.sqrt(variance)
+          average = (attribute_hash[:sum].to_f / size)
+          attribute_hash[:average] = average
+          variance = (attribute_hash[:sum_of_squares].to_f / size) - average * average
+          standard_deviation = Math.sqrt(variance)
+          attribute_hash[:plus_standard_deviation] = average + standard_deviation
+          attribute_hash[:minus_standard_deviation] = average - standard_deviation
         else
           attribute_hash[:average] = nil
-          attribute_hash[:standard_deviation] = nil
+          attribute_hash[:plus_standard_deviation] = nil
+          attribute_hash[:minus_standard_deviation] = nil
         end
 
         attribute_hash.delete(:sum)
         attribute_hash.delete(:sum_of_squares)
       end
     end
-
-    generation_hash
   end
 
   def with_unpacked_metrics_hash(metrics_hash)
     result = {}
     sizes_hash = {}
+
     genes.each_with_index do |gene, index|
       gene_hash = { name: gene }
       sizes_hash[gene] = {}
+      
       ATTRIBUTE_TYPES.each do |attribute_type|
         type_hash = {}
         sizes_hash[gene][attribute_type] = {}
 
-        CALCULATED_STATISTICS.each do |statistic|
+        calculated_statistics = %i(min max average plus_standard_deviation minus_standard_deviation)
+        calculated_statistics.each do |statistic|
           statistic_array = []
           metrics_hash.keys.each do |generation_number|
             size = metrics_hash[generation_number][gene][attribute_type][:size]
@@ -138,6 +148,7 @@ class GenerationMetricCalculator
 
       result["gene#{index+1}"] = gene_hash
     end
+
     yield result, sizes_hash
   end
 
@@ -159,16 +170,14 @@ class GenerationMetricCalculator
         sum_of_values = 0
         sum_of_sizes = 0
 
-        current_index = 0
         sizes_array = sizes_hash[gene][type].values
 
-        type_values_hash[:average].each do |average_value|
-          size = sizes_array[current_index]
+        type_values_hash[:average].each_with_index do |average_value, index|
+          size = sizes_array[index]
           if size > 0
             sum_of_values += average_value * size
             sum_of_sizes += size
           end
-          current_index += 1
         end
 
         if sum_of_sizes > 0

@@ -13,10 +13,15 @@ class Foram
   field :y,               type: Integer
   field :z,               type: Integer
   field :simulationStart, type: DateTime
+  field :generation,      type: Integer
 
   alias_underscored_attributes
 
-  def generation
-    @generation ||= deathStepNo - age
+  before_create :calculate_generation
+
+  private
+
+  def calculate_generation
+    self.generation = deathStepNo - age
   end
 end

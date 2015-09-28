@@ -11,3 +11,4 @@ Fabricator(:foram) do
 
   genotype         { |foram| Fabricate.build(:genotype, is_diploid: foram[:isDiploid]) }
 end
+
