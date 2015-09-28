@@ -12,7 +12,7 @@ class GenerationSummaryGenerator
     @summary ||= generate_summary
   end
 
-  private 
+  private
 
   def generate_summary
     return nil if genes.blank?

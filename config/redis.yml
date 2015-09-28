@@ -1,0 +1,14 @@
+development:
+  host: 'localhost'
+  port: '6379'
+  namespace: 'foram_api_development'
+
+test:
+  host: 'localhost'
+  port: '6379'
+  namespace: 'foram_api_test'
+
+production:
+  host: 'localhost'
+  port: '6379'
+  namespace: 'foram_api'

@@ -4,20 +4,15 @@ class ApplicationController < ActionController::API
   protected
 
   def authenticate_user!
-    token_and_options = token_and_options(request)
-    return unauthenticated! if token_and_options.nil?
+    token, options = token_and_options(request)
+    return unauthenticated! unless token && options
 
-    token, options = token_and_options
-    email = options[:email]
+    auth = Authentication.new(options[:email], token)
 
-    user_token = Rails.cache.fetch(email, expires_in: 30.minutes) do
-      User.where(email: email).first.authentication_token
-    end
-
-    if ActiveSupport::SecurityUtils.secure_compare(user_token, token)
-      @current_user_email = email
+    if auth.user_authenticated?
+      @current_user_email = options[:email]
     else
-      return unauthenticated!
+      unauthenticated! and return
     end
   end
 

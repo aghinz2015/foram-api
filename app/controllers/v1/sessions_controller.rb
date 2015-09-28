@@ -6,7 +6,7 @@ module V1
       user = User.where(email: create_params[:email]).first
 
       if user && user.authenticate(create_params[:password])
-        Rails.cache.write(user.email, user.token, expires_in: 30.minutes)
+        Authentication.new(user.email, user.authentication_token).cache_token
         render json: user, serializer: Users::SessionSerializer, status: :created
       else
         render json: { error: 'Email or password is incorrect' }, status: :forbidden
@@ -15,7 +15,8 @@ module V1
 
     def destroy
       current_user.change_authentication_token
-      Rails.cache.delete(@current_user_email)
+      Authentication.new(current_user.email, current_user.authentication_token)
+                    .invalidate_token_cache
       @current_user_email = nil
 
       head :ok
