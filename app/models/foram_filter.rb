@@ -1,9 +1,12 @@
 class ForamFilter
-  include ActiveModel::Model
+  include Mongoid::Document
   include ::Filters::RangedFilter
   include ::Filters::BooleanFilter
 
-  ranged_attribute haploid_juvenile_volume_factor: 'genotype.haploidJuvenileVolumeFactor.0',
+  belongs_to :user
+
+  ranged_attribute :mongoid,
+    haploid_juvenile_volume_factor: 'genotype.haploidJuvenileVolumeFactor.0',
     haploid_first_chamber_radius: 'genotype.haploidFirstChamberRadius.0',
     min_adult_age: 'genotype.minAdultAge.0',
     chamber_growth_cost_factor: 'genotype.chamberGrowthCostFactor.0',
@@ -28,7 +31,10 @@ class ForamFilter
     death_step_no: 'deathStepNo',
     age: 'age'
 
-  boolean_attribute is_diploid: 'isDiploid'
+  boolean_attribute :mongoid,
+    is_diploid: 'isDiploid'
+
+  validates :user, presence: true
 
   def forams
     forams = boolean_attributes_scope(Foram.all)

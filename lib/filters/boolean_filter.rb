@@ -13,16 +13,29 @@ module Filters::BooleanFilter
   end
 
   module ClassMethods
-    def boolean_attribute(names)
+    def boolean_attribute(persistence_model, names)
       @boolean_attributes ||= []
       names.each_pair do |name, field|
-        attr_accessor name
+        define_boolean_accessor(persistence_model, name)
         @boolean_attributes.push([name, field])
       end
     end
 
     def boolean_attributes
       @boolean_attributes
+    end
+
+    private
+
+    def define_boolean_accessor(persistence_model, attribute)
+      case persistence_model
+      when :mongoid
+        field attribute, type: Boolean
+      when :normal
+        attr_accessor attribute
+      else
+        raise ArgumentError, 'No persistence model provided'
+      end
     end
   end
 end

@@ -1,7 +1,7 @@
 class Dummy
   include ::Filters::BooleanFilter
 
-  boolean_attribute is_test_attribute: 'db_attribute'
+  boolean_attribute :normal, is_test_attribute: 'db_attribute'
 end
 
 describe ::Filters::BooleanFilter do

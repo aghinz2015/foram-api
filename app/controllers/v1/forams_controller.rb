@@ -3,7 +3,11 @@ module V1
     before_action :set_foram, only: :show
 
     def index
-      forams = ForamFilter.new(foram_filter_params).forams
+      if params[:foram_filter_id]
+        forams = ForamFilter.find(params[:foram_filter_id]).forams
+      else
+        forams = ForamFilter.new(foram_filter_params).forams
+      end
 
       paginate json: forams
     end

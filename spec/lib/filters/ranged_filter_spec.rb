@@ -1,7 +1,7 @@
 class Dummy
   include ::Filters::RangedFilter
 
-  ranged_attribute test_attribute: 'db_attribute'
+  ranged_attribute :normal, test_attribute: 'db_attribute'
 end
 
 describe ::Filters::RangedFilter do

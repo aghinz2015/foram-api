@@ -19,6 +19,8 @@ class User
   validates :email, format: { with: EMAIL_REGEXP }
   validates :password, length: { minimum: 6 }, allow_nil: true
 
+  has_many :foram_filters
+
   def change_authentication_token
     generate_authentication_token
     save

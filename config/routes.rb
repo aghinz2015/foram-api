@@ -8,6 +8,7 @@ Rails.application.routes.draw do
       resource :user, only: [:create, :update, :destroy]
       resources :forams, only: [:show, :index]
       resources :generations, only: :index
+      resources :foram_filters, except: [:new, :edit]
     end
 
     match ':status_code', to: 'errors#show', constraints: { status_code: /\d{3}/ }, via: :all
