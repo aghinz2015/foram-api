@@ -25,11 +25,11 @@ class MongoSession
     Mongoid::Config.sessions[config_name] = session_configuration
   end
 
-  private
-
   def config_name
     @config_name ||= ([user.username, name].join('_')).to_sym
   end
+
+  private
 
   def session_configuration
     {

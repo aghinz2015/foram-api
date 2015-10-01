@@ -19,6 +19,16 @@ class Foram
 
   before_create :calculate_generation
 
+  def self.for_user(user)
+    session = user.try { |user| user.mongo_sessions.active.last }
+    if session
+      session.connect
+      with(session: session.config_name).all
+    else
+      all
+    end
+  end
+
   private
 
   def calculate_generation

@@ -4,16 +4,15 @@ class ApplicationController < ActionController::API
   protected
 
   def authenticate_user!
+    unauthenticated! unless authenticate_user
+  end
+
+  def authenticate_user
     token, options = token_and_options(request)
-    return unauthenticated! unless token && options
+    return false unless token && options
 
     auth = Authentication.new(options[:email], token)
-
-    if auth.user_authenticated?
-      @current_user_email = options[:email]
-    else
-      unauthenticated! and return
-    end
+    @current_user_email = options[:email] if auth.user_authenticated?
   end
 
   def unauthenticated!

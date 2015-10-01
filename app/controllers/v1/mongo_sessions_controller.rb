@@ -8,7 +8,7 @@ module V1
     end
 
     def create
-      session = @current_user.mongo_sessions.build session_params
+      session = current_user.mongo_sessions.build session_params
       if session.save
         render json: session, status: :created
       else

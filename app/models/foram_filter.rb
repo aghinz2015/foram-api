@@ -37,8 +37,8 @@ class ForamFilter
 
   validates :user, presence: true
 
-  def forams
-    forams = boolean_attributes_scope(Foram.all)
+  def forams(user: nil)
+    forams = boolean_attributes_scope(Foram.for_user(user))
     ranged_attributes_scope(forams)
   end
 

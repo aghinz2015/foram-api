@@ -1,12 +1,13 @@
 module V1
   class ForamsController < ApplicationController
+    before_action :authenticate_user
     before_action :set_foram, only: :show
 
     def index
       if params[:foram_filter_id]
-        forams = ForamFilter.find(params[:foram_filter_id]).forams
+        forams = ForamFilter.find(params[:foram_filter_id]).forams(user: current_user)
       else
-        forams = ForamFilter.new(foram_filter_params).forams
+        forams = ForamFilter.new(foram_filter_params).forams(user: current_user)
       end
 
       paginate json: forams
@@ -19,7 +20,7 @@ module V1
     private
 
     def set_foram
-      @foram = Foram.find(params[:id])
+      @foram = Foram.for_user(current_user).find(params[:id])
     end
 
     def foram_filter_params
