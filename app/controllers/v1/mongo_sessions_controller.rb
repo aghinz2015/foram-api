@@ -1,10 +1,19 @@
 module V1
   class MongoSessionsController < ApplicationController
     before_action :authenticate_user!
-    before_action :set_mongo_session, only: :update
+    before_action :set_mongo_session, except: [:index, :create]
 
     def index
       render json: current_user.mongo_sessions
+    end
+
+    def create
+      session = @current_user.mongo_sessions.build session_params
+      if session.save
+        render json: session, status: :created
+      else
+        render json: session.errors, status: :unprocessable_entity
+      end
     end
 
     def update
@@ -15,10 +24,18 @@ module V1
       end
     end
 
+    def destroy
+      if @session.destroy
+        head :no_content
+      else
+        head :forbidden
+      end
+    end
+
     private
 
     def session_params
-      params.require(:mongo_session).permit(:active)
+      params.require(:mongo_session).permit(:active, :name, :database, :username, :password, hosts: [])
     end
 
     def set_mongo_session
