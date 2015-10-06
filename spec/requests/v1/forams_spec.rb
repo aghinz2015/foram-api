@@ -71,7 +71,7 @@ describe 'Forams' do
         }
     end
 
-    it 'responds with all forams' do
+    xit 'responds with all forams' do
       expect(json_response).to eq expected_forams
     end
 
@@ -119,7 +119,7 @@ describe 'Forams' do
         }
       end
 
-      it 'responds with specified foram' do
+      xit 'responds with specified foram' do
         expect(json_response).to eq expected_foram
       end
 
