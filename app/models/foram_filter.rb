@@ -5,44 +5,49 @@ class ForamFilter
 
   belongs_to :user
 
-  ranged_attribute :mongoid,
-    haploid_juvenile_volume_factor: 'genotype.haploidJuvenileVolumeFactor.0',
-    haploid_first_chamber_radius: 'genotype.haploidFirstChamberRadius.0',
-    min_adult_age: 'genotype.minAdultAge.0',
-    chamber_growth_cost_factor: 'genotype.chamberGrowthCostFactor.0',
-    energy_demand_per_chamber: 'genotype.energyDemandPerChamber.0',
-    min_adult_volume: 'genotype.minAdultVolume.0',
-    wall_thickness_factor: 'genotype.wallThicknessFactor.0',
-    min_energy: 'genotype.minEnergy.0',
-    metabolic_effectiveness: 'genotype.metabolicEffectiveness.0',
-    diploid_juvenile_volume_factor: 'genotype.diploidJuvenileVolumeFactor.0',
-    diploid_first_chamber_radius: 'genotype.diploidFirstChamberRadius.0',
-    hibernation_energy_consumption: 'genotype.hibernationEnergyConsumption.0',
-    translation_factor: 'genotype.translationFactor.0',
-    growth_factor: 'genotype.growthFactor.0',
-    hibernation_energy_level: 'genotype.hibernationEnergyLevel.0',
-    rotation_angle: 'genotype.rotationAngle.0',
-    deviation_angle: 'genotype.deviationAngle.0',
-    min_metabolic_effectiveness: 'genotype.minMetabolicEffectiveness.0',
-    max_energy_per_chamber: 'genotype.maxEnergyPerChamber.0',
-    x: 'x',
-    y: 'y',
-    z: 'z',
-    death_step_no: 'deathStepNo',
-    age: 'age',
-    generation: 'generation'
+  private
+
+  def self.foram_ranged_parameters_mapping
+    @mapping ||= begin
+      result = {}
+      extract_ranged_parameters(Foram).each { |param| result[param.to_sym] = param.camelize(:lower) }
+      extract_ranged_parameters(Genotype).each { |param| result[param.to_sym] = "genotype.#{param.camelize(:lower)}.0"}
+      result
+    end
+  end
+
+  def self.extract_ranged_parameters(klass)
+    klass.fields.select { |name, field| [Integer, Gene].include?(field.type) }.keys.map!(&:underscore)
+  end
+
+  public
+
+  ranged_attribute :mongoid, foram_ranged_parameters_mapping
 
   boolean_attribute :mongoid,
     is_diploid: 'isDiploid'
 
   validates :user, presence: true
 
-  def forams(user: nil)
+  def forams(user: nil, order: nil)
     forams = boolean_attributes_scope(Foram.for_user(user))
-    ranged_attributes_scope(forams)
+    ordered_scope(ranged_attributes_scope(forams), order)
   end
 
   def self.params
     @params ||= (boolean_attributes + ranged_attributes).map { |a| a[0].to_sym }
+  end
+
+  def ordered_scope(forams, ordering_params)
+    return forams unless ordering_params && ordering_params[:order_by]
+    order_by = ordering_params[:order_by].underscore.to_sym
+
+    if ForamFilter.foram_ranged_parameters_mapping.has_key?(order_by)
+      direction = ordering_params[:direction]
+      direction = "asc" unless ["asc", "desc"].include?(direction)
+      forams.order_by(ForamFilter.foram_ranged_parameters_mapping[order_by] => direction.to_sym)
+    else
+      forams
+    end
   end
 end

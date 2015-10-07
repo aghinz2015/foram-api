@@ -134,16 +134,7 @@ describe GenerationMetricCalculator do
       }
     end
 
-     before do
-      50.times do
-        Fabricate(:foram) do
-          age { sequence(:age) { |i| 20 + i / 5 } }
-          death_step_no { sequence(:death_step_no) { |i| 30 + i / 2 } }
-          is_diploid { sequence(:is_diploid) { |i| i % 2 == 0 } }
-          genotype { sequence(:genotype) { |i| Fabricate.build(:genotype, is_diploid: (i % 2 == 0), range: i..i) } }
-        end
-      end
-     end
+    include_context "populated database"
 
     # basic test, suite will be expanded to focus on single features
     # for now, this test will allow to safely refactor code

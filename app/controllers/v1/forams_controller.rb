@@ -8,9 +8,9 @@ module V1
 
     def index
       if params[:foram_filter_id]
-        forams = ForamFilter.find(params[:foram_filter_id]).forams(user: current_user)
+        forams = ForamFilter.find(params[:foram_filter_id]).forams(user: current_user, order: ordering_params)
       else
-        forams = ForamFilter.new(foram_filter_params).forams(user: current_user)
+        forams = ForamFilter.new(foram_filter_params).forams(user: current_user, order: ordering_params)
       end
 
       respond_to do |format|
@@ -39,6 +39,10 @@ module V1
     rescue Moped::Errors::ConnectionFailure
       error = I18n.t("errors.mongo_sessions.connection_failure", ip_addresses: session.hosts)
       render json: { error: error }, status: :unprocessable_entity
+    end
+
+    def ordering_params
+      params.permit(:order_by, :direction)
     end
   end
 end
