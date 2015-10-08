@@ -21,3 +21,6 @@
 
 en:
   hello: "Hello world"
+  errors:
+    mongo_sessions:
+      connection_failure: "Could not connect to a primary node for replica set: %{ip_addresses}"
