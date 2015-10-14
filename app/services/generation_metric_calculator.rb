@@ -15,7 +15,7 @@ class GenerationMetricCalculator
   def generation_metrics
     @metrics ||= begin
       group_by(grouping_parameter)
-      { grouping_parameter: { name: grouping_parameter, values: generations.keys } }.
+      { grouping_parameter: { name: grouping_parameter, values: generations.keys, sizes: generations.values.map(&:size) } }.
         merge!(calculate_metrics)
     end
   end
@@ -140,7 +140,12 @@ class GenerationMetricCalculator
             value = value.round(PRECISION) if value
             statistic_array << value
           end
-          type_hash[statistic] = statistic_array
+          if %i(plus_standard_deviation minus_standard_deviation).include?(statistic)
+            type_hash[:standard_deviation] ||= {}
+            type_hash[:standard_deviation][statistic] = statistic_array
+          else
+            type_hash[statistic] = statistic_array
+          end
         end
 
         gene_hash[attribute_type] = type_hash
