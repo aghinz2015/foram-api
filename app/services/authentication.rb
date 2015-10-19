@@ -10,7 +10,9 @@ class Authentication
 
   def user_authenticated?
     user_token = Rails.cache.fetch(email, expires_in: STORE_PERIOD) do
-      User.where(email: email).first.authentication_token
+      user = User.where(email: email).first
+      return false if user.nil?
+      user.authentication_token
     end
 
     ActiveSupport::SecurityUtils.secure_compare(user_token, token)
