@@ -6,12 +6,12 @@ class User
 
   before_create :generate_authentication_token
 
+  embeds_one :settings_set, autobuild: true
+
   field :email,                   type: String
   field :username,                type: String
   field :password_digest,         type: String
   field :authentication_token,    type: String
-  field :number_precision,        type: Integer, default: 4
-  field :mappings,                type: Hash
 
   embeds_many :mongo_sessions
   has_secure_password
