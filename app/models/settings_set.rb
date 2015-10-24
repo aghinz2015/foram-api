@@ -12,7 +12,7 @@ class SettingsSet
   private
 
   def mappings_format
-    if mappings.keys.any?{ |k| k =~ /\W/ }
+    if mappings && mappings.keys.any?{ |k| k =~ /\W/ }
       errors.add(:mappings, 'format is invalid')
     end
   end

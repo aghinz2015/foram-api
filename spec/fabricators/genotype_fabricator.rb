@@ -10,7 +10,7 @@ Fabricator(:genotype) do
     fields.keys.each do |field|
       next if genotype.send(field).send(:effective).present?
       range = transients[:range] || fields[field][:range]
-      
+
       genotype.send("#{field}=", Fabricate(:gene, range: range, is_diploid: transients[:is_diploid]))
     end
   end
