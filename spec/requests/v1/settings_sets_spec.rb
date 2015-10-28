@@ -54,7 +54,7 @@ describe V1::SettingsSetsController do
         it 'updates settings' do
           subject
           expect(response).to be_success
-          expect(user.reload.settings_set.mappings['deviation_angle']).to eq(params[:settings_set][:mappings][:deviation_angle])
+          expect(user.reload.settings_set.mappings['deviation_angle']).to eq('Deviation angle')
         end
       end
 

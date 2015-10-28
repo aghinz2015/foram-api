@@ -1,14 +1,15 @@
 module V1
   class SettingsSetsController < ApplicationController
     before_action :authenticate_user!
+    before_action :set_settings_set
 
     def show
-      render json: current_user.settings_set
+      render json: @settings_set
     end
 
     def update
-      if current_user.settings_set.update(settings_set_params)
-        render json: current_user.settings_set
+      if @settings_set.update(settings_set_params)
+        render json: @settings_set
       else
         head :unprocessable_entity
       end
@@ -20,6 +21,10 @@ module V1
       params.require(:settings_set).permit(:number_precision).tap do |whitelisted|
         whitelisted[:mappings] = params[:settings_set][:mappings]
       end
+    end
+
+    def set_settings_set
+      @settings_set = current_user.settings_set
     end
   end
 end
