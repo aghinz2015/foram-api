@@ -5,7 +5,7 @@ Rails.application.routes.draw do
       post    'user/login',    to: 'sessions#create'
       delete  'user/logout',   to: 'sessions#destroy'
 
-      resource :user, only: [:create, :update, :destroy] do
+      resource :user, except: [:index, :new, :edit] do
         resources :mongo_sessions, only: [:index, :create, :update, :destroy]
         resource :settings_set, only: [:show, :update]
       end

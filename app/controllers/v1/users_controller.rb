@@ -2,6 +2,10 @@ module V1
   class UsersController < ApplicationController
     before_action :authenticate_user!, except: :create
 
+    def show
+      render json: current_user
+    end
+
     def create
       user = User.new(user_params)
       if user.save
