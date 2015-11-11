@@ -1,5 +1,7 @@
 module V1
   class ForamsController < ApplicationController
+    include ActionController::MimeResponds
+
     before_action :authenticate_user
     before_action :set_foram, only: :show
     around_action :check_mongo_session_connection
@@ -11,7 +13,10 @@ module V1
         forams = ForamFilter.new(foram_filter_params).forams(user: current_user)
       end
 
-      paginate json: forams
+      respond_to do |format|
+        format.json { paginate json: forams }
+        format.csv  { send_data forams.to_csv, filename: "forams-#{Date.today}.csv" }
+      end
     end
 
     def show

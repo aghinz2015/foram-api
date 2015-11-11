@@ -1,5 +1,6 @@
 class Foram
   include Mongoid::Document
+  require 'csv'
 
   embeds_one :genotype
 
@@ -26,6 +27,17 @@ class Foram
       with(session: session.config_name).all
     else
       all
+    end
+  end
+
+  def self.to_csv
+    attributes = Foram.attribute_names + Genotype.attribute_names
+    attributes.delete('_id')
+    CSV.generate(headers: true) do |csv|
+      csv << attributes
+      all.each do |foram|
+        csv << foram.attributes.merge!(foram.genotype.attributes)
+      end
     end
   end
 
