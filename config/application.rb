@@ -4,7 +4,7 @@ require 'rails'
 
 require 'active_model/railtie'
 require 'active_job/railtie'
-require 'active_record/railtie'
+# require 'active_record/railtie'
 require 'action_controller/railtie'
 # require 'action_mailer/railtie'
 # require 'action_view/railtie'
@@ -25,8 +25,6 @@ module ForamApi
                  expose: %w(Link Total Per-Page)
       end
     end
-
-    config.active_record.raise_in_transactional_callbacks = true
 
     config.autoload_paths += %W(
       #{config.root}/app/services
