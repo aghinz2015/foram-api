@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  constraints defaults: { format: :json } do
+  constraints do
     api version: 1, default: true do
 
       post    'user/login',    to: 'sessions#create'
