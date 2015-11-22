@@ -30,7 +30,7 @@ class Foram
     end
   end
 
-  def self.to_csv
+  def self.to_csv(options)
     attributes = Foram.attribute_names + Genotype.attribute_names
     attributes.delete('_id')
     CSV.generate(headers: true) do |csv|

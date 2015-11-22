@@ -15,7 +15,7 @@ module V1
 
       respond_to do |format|
         format.json { paginate json: forams }
-        format.csv  { send_data forams.to_csv, filename: "forams-#{Date.today}.csv" }
+        format.csv  { render csv: forams }
       end
     end
 
