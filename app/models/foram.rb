@@ -13,7 +13,7 @@ class Foram
   field :x,               type: Integer
   field :y,               type: Integer
   field :z,               type: Integer
-  field :simulationStart, type: DateTime
+  field :simulationStart, type: Integer
   field :generation,      type: Integer
 
   alias_underscored_attributes
