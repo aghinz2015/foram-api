@@ -12,7 +12,8 @@ class MongoSession
   field :foram_collection,   type: String
   attr_writer :password
 
-  validates :name, :database, :hosts, :username, :encrypted_password, :foram_collection, presence: true
+  validates :name, :database, :hosts, :foram_collection, presence: true
+  validates :encrypted_password, presence: true, if: ->(record) { record.username.present? }
   validates :name, uniqueness: { scope: :user }
 
   after_save :deactivate_other_sessions, if: ->(session) { session.active && session.active_changed? }

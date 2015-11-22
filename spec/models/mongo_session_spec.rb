@@ -10,7 +10,6 @@ describe MongoSession do
 
   it { is_expected.to validate_presence_of(:database) }
   it { is_expected.to validate_presence_of(:hosts) }
-  it { is_expected.to validate_presence_of(:username) }
   it { is_expected.to validate_presence_of(:encrypted_password) }
   it { is_expected.to validate_presence_of(:foram_collection) }
   it { is_expected.to validate_uniqueness_of(:name).scoped_to(:user) }
