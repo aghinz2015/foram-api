@@ -41,6 +41,20 @@ class Foram
     end
   end
 
+  def self.to_gen(options)
+    gen = ""
+    all.each do |foram|
+      genotype = foram.genotype
+      gf = genotype.growth_factor.effective
+      gen << "org:\ngenotype:/*F*/7,"\
+             "#{gf},#{gf},#{gf},"\
+             "#{genotype.translation_factor.effective},"\
+             "#{genotype.deviation_angle.effective},"\
+             "#{genotype.rotation_angle.effective}\n\n"
+    end
+    gen
+  end
+
   private
 
   def calculate_generation
