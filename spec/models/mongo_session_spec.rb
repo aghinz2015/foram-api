@@ -4,7 +4,7 @@ describe MongoSession do
   include Mongoid::Matchers
 
   it { is_expected.to be_embedded_in :user }
-  it { is_expected.to have_fields(:name, :database, :hosts, :username, :encrypted_password) }
+  it { is_expected.to have_fields(:name, :database, :hosts, :username, :encrypted_password, :foram_collection) }
   it { is_expected.to respond_to(:password=) }
   it { is_expected.not_to respond_to(:password) }
 
@@ -12,6 +12,7 @@ describe MongoSession do
   it { is_expected.to validate_presence_of(:hosts) }
   it { is_expected.to validate_presence_of(:username) }
   it { is_expected.to validate_presence_of(:encrypted_password) }
+  it { is_expected.to validate_presence_of(:foram_collection) }
   it { is_expected.to validate_uniqueness_of(:name).scoped_to(:user) }
 
   describe 'password encryption' do

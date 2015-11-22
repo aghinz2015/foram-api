@@ -24,7 +24,7 @@ class Foram
     session = user.try { |user| user.mongo_sessions.active.last }
     if session
       session.connect
-      with(session: session.config_name).all
+      with(session: session.config_name, collection: session.foram_collection).all
     else
       all
     end

@@ -9,9 +9,10 @@ class MongoSession
   field :username,           type: String
   field :encrypted_password, type: String
   field :active,             type: Boolean
+  field :foram_collection,   type: String
   attr_writer :password
 
-  validates :name, :database, :hosts, :username, :encrypted_password, presence: true
+  validates :name, :database, :hosts, :username, :encrypted_password, :foram_collection, presence: true
   validates :name, uniqueness: { scope: :user }
 
   after_save :deactivate_other_sessions, if: ->(session) { session.active && session.active_changed? }
