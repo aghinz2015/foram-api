@@ -1,3 +1,3 @@
-server '46.101.145.100', user: 'deploy', roles: %w(app db web)
+server 'mongo.icsr.agh.edu.pl', user: 'viewer', roles: %w(app db web)
 
 set :deploy_to, '/apps/foram_api_production'

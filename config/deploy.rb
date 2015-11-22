@@ -8,7 +8,6 @@ set :default_env, { path: "/opt/ruby/bin:$PATH" }
 
 set :linked_files, fetch(:linked_files, []).push(
   '.env',
-  'config/database.yml',
   'config/mongoid.yml',
   'config/secrets.yml'
 )
