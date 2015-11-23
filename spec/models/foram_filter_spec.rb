@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe ForamFilter do
-  let(:user) { nil }
   let(:order) { nil }
 
   include_context "populated database"

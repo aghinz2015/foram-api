@@ -8,11 +8,9 @@ class ForamFilter
   private
 
   def self.foram_ranged_parameters_mapping
-    @mapping ||= begin
-      result = {}
+    @mapping ||= {}.tap do |result|
       extract_ranged_parameters(Foram).each { |param| result[param.to_sym] = param.camelize(:lower) }
-      extract_ranged_parameters(Genotype).each { |param| result[param.to_sym] = "genotype.#{param.camelize(:lower)}.0"}
-      result
+      extract_ranged_parameters(Genotype).each { |param| result[param.to_sym] = "genotype.#{param.camelize(:lower)}.0" }
     end
   end
 
