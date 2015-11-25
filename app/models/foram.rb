@@ -15,6 +15,8 @@ class Foram
   field :z,               type: Integer
   field :simulationStart, type: Integer
   field :generation,      type: Integer
+  field :firstParentId,   type: String
+  field :secondParentId,  type: String
 
   alias_underscored_attributes
 

@@ -10,9 +10,11 @@ Rails.application.routes.draw do
     end
     resources :forams, only: [:show, :index] do
       get :attribute_names, on: :collection
+      resources :descendants, only: :index
     end
     resources :generations, only: :index
     resources :foram_filters, except: [:new, :edit]
+    resources :death_coordinates, only: :index
   end
 
   match ':status_code', to: 'errors#show', constraints: { status_code: /\d{3}/ }, via: :all
