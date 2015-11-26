@@ -8,7 +8,9 @@ Rails.application.routes.draw do
       resources :mongo_sessions, only: [:index, :create, :update, :destroy]
       resource :settings_set, only: [:show, :update]
     end
-    resources :forams, only: [:show, :index]
+    resources :forams, only: [:show, :index] do
+      get :attribute_names, on: :collection
+    end
     resources :generations, only: :index
     resources :foram_filters, except: [:new, :edit]
   end

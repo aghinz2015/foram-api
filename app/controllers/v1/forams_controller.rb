@@ -24,6 +24,10 @@ module V1
       render json: @foram
     end
 
+    def attribute_names
+      render json: Foram.all_attribute_names(current_user)
+    end
+
     private
 
     def set_foram

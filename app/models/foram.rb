@@ -24,10 +24,20 @@ class Foram
     session = user.try { |user| user.mongo_sessions.active.last }
     if session
       session.connect
-      with(session: session.config_name, collection: session.foram_collection).all
+      with(session: session.config_name, collection: session.foram_collection)
     else
-      all
+      self
     end
+  end
+
+  def self.all_attribute_names(user=nil)
+    if user.present?
+      foram = for_user(user).first
+      names = foram.attributes.keys + foram.genotype.attributes.keys rescue []
+    else
+      names = attribute_names + Genotype.attribute_names
+    end
+    names - %w(_id genotype)
   end
 
   def self.to_csv(options)
