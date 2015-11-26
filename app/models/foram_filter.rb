@@ -3,6 +3,7 @@ class ForamFilter
   include ::Filters::RangedFilter
   include ::Filters::BooleanFilter
 
+  field :name, type: String
   belongs_to :user
 
   private
@@ -33,7 +34,7 @@ class ForamFilter
   end
 
   def self.params
-    @params ||= (boolean_attributes + ranged_attributes).map { |a| a[0].to_sym }
+    @params ||= (boolean_attributes + ranged_attributes).map { |a| a[0].to_sym } << 'name'
   end
 
   def ordered_scope(forams, ordering_params)
