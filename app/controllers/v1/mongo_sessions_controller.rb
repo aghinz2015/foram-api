@@ -35,7 +35,7 @@ module V1
     private
 
     def session_params
-      params.require(:mongo_session).permit(:active, :name, :database, :username, :password, hosts: [])
+      params.require(:mongo_session).permit(:active, :name, :database, :username, :password, :foram_collection, hosts: [])
     end
 
     def set_mongo_session
