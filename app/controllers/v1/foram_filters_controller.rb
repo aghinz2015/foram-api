@@ -37,7 +37,7 @@ module V1
     private
 
     def set_filter
-      @filter = current_user.filters.find params[:id]
+      @filter = current_user.foram_filters.find params[:id]
     end
 
     def foram_filter_params
