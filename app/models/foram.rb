@@ -39,7 +39,7 @@ class Foram
     else
       names = attribute_names + Genotype.attribute_names
     end
-    names - %w(_id genotype)
+    names.map!(&:underscore) - %w(_id genotype)
   end
 
   def self.to_csv(options)
