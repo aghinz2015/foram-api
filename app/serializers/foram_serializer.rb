@@ -1,5 +1,5 @@
 class ForamSerializer < ActiveModel::Serializer
-  attributes :id, :death_step_no, :age, :is_diploid, :x, :y, :z, :simulation_start
-
-  has_one :genotype
+  def attributes
+    object.attributes.deep_transform_keys{ |key| key.to_s.underscore.to_sym }
+  end
 end

@@ -1,26 +1,31 @@
 class Foram
   include Mongoid::Document
+  include Mongoid::Attributes::Dynamic
   require 'csv'
 
   embeds_one :genotype
 
-  field :className,       type: String
-  field :foramId,         type: String
-  field :deathStepNo,     type: Integer
-  field :age,             type: Integer
-  field :isDiploid,       type: Boolean
-  field :foramType,       type: String
-  field :x,               type: Integer
-  field :y,               type: Integer
-  field :z,               type: Integer
-  field :simulationStart, type: Integer
-  field :generation,      type: Integer
-  field :firstParentId,   type: String
-  field :secondParentId,  type: String
+  # field :className,       type: String
+  # field :foramId,         type: String
+  # field :deathStepNo,     type: Integer
+  # field :age,             type: Integer
+  # field :isDiploid,       type: Boolean
+  # field :foramType,       type: String
+  # field :x,               type: Integer
+  # field :y,               type: Integer
+  # field :z,               type: Integer
+  # field :simulationStart, type: Integer
+  # field :generation,      type: Integer
+  # field :firstParentId,   type: String
+  # field :secondParentId,  type: String
 
-  alias_underscored_attributes
+  # alias_underscored_attributes
 
   before_create :calculate_generation
+
+  def method_missing(method, *args, &block)
+    super method.to_s.camelize(:lower).to_sym, *args, &block
+  end
 
   def self.for_user(user)
     session = user.try { |user| user.mongo_sessions.active.last }
