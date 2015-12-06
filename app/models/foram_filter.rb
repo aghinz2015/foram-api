@@ -16,7 +16,7 @@ class ForamFilter
   end
 
   def self.extract_ranged_parameters(klass)
-    klass.fields.select { |name, field| [Integer, Gene].include?(field.type) }.keys.map!(&:underscore)
+    klass.fields.select { |name, field| [Integer, Array].include?(field.type) }.keys.map!(&:underscore)
   end
 
   public

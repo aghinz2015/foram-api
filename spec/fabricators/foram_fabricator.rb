@@ -4,6 +4,7 @@ Fabricator(:foram) do
   death_step_no    { Faker::Number.number(5) }
   age              { Faker::Number.number(4) }
   is_diploid       { rand > 0.5 }
+  chambers_count   { Faker::Number.number(1) }
   x                { Faker::Number.number(1) }
   y                { Faker::Number.number(1) }
   z                { Faker::Number.number(1) }

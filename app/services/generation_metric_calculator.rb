@@ -80,7 +80,7 @@ class GenerationMetricCalculator
           value = genotype.send(attribute).send(type)
           if value
             attribute_hash = generation_hash[attribute][type]
-            attribute_hash[:size] += 1 
+            attribute_hash[:size] += 1
 
             attribute_hash[:min] = value if attribute_hash[:min].nil? || value < attribute_hash[:min]
             attribute_hash[:max] = value if attribute_hash[:max].nil? || value > attribute_hash[:max]
@@ -124,7 +124,7 @@ class GenerationMetricCalculator
     genes.each_with_index do |gene, index|
       gene_hash = { name: gene }
       sizes_hash[gene] = {}
-      
+
       ATTRIBUTE_TYPES.each do |attribute_type|
         type_hash = {}
         sizes_hash[gene][attribute_type] = {}
@@ -166,11 +166,11 @@ class GenerationMetricCalculator
       ATTRIBUTE_TYPES.each do |type|
 
         globals_hash[gene][type] = {}
-       
+
         type_values_hash = metrics_hash[gene_key][type]
 
-        globals_hash[gene][type][:min] = type_values_hash[:min].min 
-        globals_hash[gene][type][:max] = type_values_hash[:max].max 
+        globals_hash[gene][type][:min] = type_values_hash[:min].min
+        globals_hash[gene][type][:max] = type_values_hash[:max].max
 
         sum_of_values = 0
         sum_of_sizes = 0

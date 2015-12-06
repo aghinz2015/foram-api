@@ -5,24 +5,6 @@ class Foram
 
   embeds_one :genotype
 
-  # field :className,       type: String
-  # field :foramId,         type: String
-  # field :deathStepNo,     type: Integer
-  # field :age,             type: Integer
-  # field :isDiploid,       type: Boolean
-  # field :foramType,       type: String
-  # field :x,               type: Integer
-  # field :y,               type: Integer
-  # field :z,               type: Integer
-  # field :simulationStart, type: Integer
-  # field :generation,      type: Integer
-  # field :firstParentId,   type: String
-  # field :secondParentId,  type: String
-
-  # alias_underscored_attributes
-
-  before_create :calculate_generation
-
   def method_missing(method, *args, &block)
     super method.to_s.camelize(:lower).to_sym, *args, &block
   end
@@ -48,7 +30,7 @@ class Foram
   end
 
   def self.to_csv(options)
-    attributes = Foram.attribute_names + Genotype.attribute_names
+    attributes = all_attribute_names options[:user]
     attributes.delete('_id')
     CSV.generate(headers: true) do |csv|
       csv << attributes
@@ -62,7 +44,7 @@ class Foram
     all.map do |foram|
       genotype = foram.genotype
       gf = genotype.growth_factor.effective
-      ["org\ngenotype:/*F*/7",
+      ["org\ngenotype:/*F*/#{foram.chambers_count}",
         gf, gf, gf,
         genotype.translation_factor.effective,
         genotype.deviation_angle.effective,
@@ -71,9 +53,7 @@ class Foram
     end.join("\n\n")
   end
 
-  private
-
-  def calculate_generation
-    self.generation = deathStepNo - age
+  def generation
+    deathStepNo - age
   end
 end
