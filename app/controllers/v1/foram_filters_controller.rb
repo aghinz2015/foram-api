@@ -34,6 +34,10 @@ module V1
       head :no_content
     end
 
+    def attribute_names
+      render json: ForamFilter.params(user: current_user)
+    end
+
     private
 
     def set_filter
@@ -41,7 +45,7 @@ module V1
     end
 
     def foram_filter_params
-      params.require(:foram_filter).permit(ForamFilter.params)
+      params.require(:foram_filter).except!(:user_id).permit!
     end
   end
 end

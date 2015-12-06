@@ -19,19 +19,26 @@ class Foram
     end
   end
 
-  def self.all_attribute_names(user=nil)
-    if user.present?
-      foram = for_user(user).first
-      names = foram.attributes.keys + foram.genotype.attributes.keys rescue []
+  def self.all_attribute_names(user: nil, camelize: false)
+    foram = for_user(user).first
+    names = foram.attributes.keys + foram.genotype.attributes.keys rescue []
+    names -= %w(_id genotype)
+    camelize ? names : names.map(&:underscore)
+  end
+
+  def self.find_mapping(attribute, user: nil)
+    foram = for_user(user).first
+    if foram.attributes.keys.include? attribute
+      attribute
+    elsif foram.genotype.attributes.keys.include? attribute
+      "genotype.#{attribute}.0"
     else
-      names = attribute_names + Genotype.attribute_names
+      raise "Attribute #{attribute} was not found"
     end
-    names.map!(&:underscore) - %w(_id genotype)
   end
 
   def self.to_csv(options)
-    attributes = all_attribute_names options[:user]
-    attributes.delete('_id')
+    attributes = all_attribute_names(user: options[:user], camelize: true)
     CSV.generate(headers: true) do |csv|
       csv << attributes
       all.each do |foram|

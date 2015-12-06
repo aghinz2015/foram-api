@@ -13,7 +13,9 @@ Rails.application.routes.draw do
       resources :descendants, only: :index
     end
     resources :generations, only: :index
-    resources :foram_filters, except: [:new, :edit]
+    resources :foram_filters, except: [:new, :edit] do
+      get :attribute_names, on: :collection
+    end
     resources :death_coordinates, only: :index
   end
 

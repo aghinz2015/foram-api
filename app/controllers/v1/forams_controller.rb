@@ -10,7 +10,7 @@ module V1
       if params[:foram_filter_id]
         forams = ForamFilter.find(params[:foram_filter_id]).forams(user: current_user, order: ordering_params)
       else
-        forams = ForamFilter.new(foram_filter_params).forams(user: current_user, order: ordering_params)
+        forams = ForamFilter.new(params[:foram_filter]).forams(user: current_user, order: ordering_params)
       end
 
       respond_to do |format|
@@ -25,17 +25,13 @@ module V1
     end
 
     def attribute_names
-      render json: Foram.all_attribute_names(current_user)
+      render json: Foram.all_attribute_names(user: current_user)
     end
 
     private
 
     def set_foram
       @foram = Foram.for_user(current_user).find(params[:id])
-    end
-
-    def foram_filter_params
-      params.permit(ForamFilter.params)
     end
 
     def check_mongo_session_connection
