@@ -38,7 +38,7 @@ class Foram
   end
 
   def self.to_csv(options)
-    attributes = all_attribute_names(user: options[:user], camelize: true)
+    attributes = all.all_attribute_names(camelize: true)
     CSV.generate(headers: true) do |csv|
       csv << attributes
       all.each do |foram|
@@ -62,5 +62,9 @@ class Foram
 
   def generation
     deathStepNo - age
+  end
+
+  def deathStepNo # TODO tymczasowy fix
+    death_hour
   end
 end

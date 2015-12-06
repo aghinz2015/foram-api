@@ -15,7 +15,7 @@ module V1
 
       respond_to do |format|
         format.json { paginate json: forams }
-        format.csv  { render csv: forams, user: current_user }
+        format.csv  { render csv: forams }
         format.gen  { render gen: forams }
       end
     end
