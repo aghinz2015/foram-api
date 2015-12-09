@@ -6,7 +6,11 @@ class Foram
   embeds_one :genotype
 
   def method_missing(method, *args, &block)
-    super method.to_s.camelize(:lower).to_sym, *args, &block
+    if respond_to?(method_name = method.to_s.underscore.to_sym)
+      super method_name, *args, &block
+    else
+      super method.to_s.camelize(:lower).to_sym, *args, &block
+    end
   end
 
   def self.for_user(user)

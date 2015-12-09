@@ -38,7 +38,8 @@ class MongoSession
       database: database,
       hosts: hosts,
       username: username,
-      password: Encryptor.new.decrypt(encrypted_password)
+      password: Encryptor.new.decrypt(encrypted_password),
+      foram_collection: foram_collection
     }
   end
 

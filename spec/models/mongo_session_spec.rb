@@ -29,7 +29,8 @@ describe MongoSession do
         'hosts' => ['localhost:5640'],
         'database' => 'forams',
         'username' => 'testowy',
-        'password' => 'test'
+        'password' => 'test',
+        'foram_collection' => 'forams'
       }
     end
     subject do
@@ -38,7 +39,8 @@ describe MongoSession do
         hosts: ['localhost:5640'],
         database: 'forams',
         username: 'testowy',
-        password: 'test'
+        password: 'test',
+        foram_collection: 'forams'
       )
     end
 

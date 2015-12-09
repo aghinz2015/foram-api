@@ -33,8 +33,8 @@ describe V1::MongoSessionsController do
       context "when user has some mongo sessions" do
         let(:sessions) do
           [
-            Fabricate.build(:mongo_session, name: "A", database: "A_db", hosts: ["127.0.0.1:27800"], username: "tester"),
-            Fabricate.build(:mongo_session, name: "B", database: "B_db", hosts: ["256.46.5.9:27800"], username: "test"),
+            Fabricate.build(:mongo_session, name: "A", database: "A_db", hosts: ["127.0.0.1:27800"], username: "tester", foram_collection: 'forams'),
+            Fabricate.build(:mongo_session, name: "B", database: "B_db", hosts: ["256.46.5.9:27800"], username: "test", foram_collection: 'forams'),
           ]
         end
 
@@ -45,8 +45,8 @@ describe V1::MongoSessionsController do
 
         let(:expected_json) do
           { mongo_sessions: [
-              { id: sessions[0].id.to_s, name: "A", database: "A_db", hosts: ["127.0.0.1:27800"], username: "tester", active: nil },
-              { id: sessions[1].id.to_s, name: "B", database: "B_db", hosts: ["256.46.5.9:27800"], username: "test", active: nil }
+              { id: sessions[0].id.to_s, name: "A", database: "A_db", hosts: ["127.0.0.1:27800"], username: "tester", foram_collection: 'forams', active: nil },
+              { id: sessions[1].id.to_s, name: "B", database: "B_db", hosts: ["256.46.5.9:27800"], username: "test", foram_collection: 'forams', active: nil }
             ]
           }
         end
