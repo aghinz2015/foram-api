@@ -1,6 +1,5 @@
 module V1
   class ForamFiltersController < ApplicationController
-    before_action :authenticate_user!
     before_action :set_filter, only: [:show, :update, :destroy]
 
     def index
@@ -35,7 +34,7 @@ module V1
     end
 
     def attribute_names
-      render json: ForamFilter.params(user: current_user)
+      render json: ForamFilter.attributes_map(Foram.for_user(current_user)).keys
     end
 
     private

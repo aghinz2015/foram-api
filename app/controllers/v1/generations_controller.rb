@@ -1,7 +1,6 @@
 module V1
   class GenerationsController < ApplicationController
     before_action :set_grouping_parameter
-    before_action :authenticate_user!
 
     ALLOWED_GROUPING_PARAMETERS = %w(death_hour age generation)
 

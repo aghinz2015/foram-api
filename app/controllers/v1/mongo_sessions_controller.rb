@@ -1,6 +1,5 @@
 module V1
   class MongoSessionsController < ApplicationController
-    before_action :authenticate_user!
     before_action :set_mongo_session, except: [:index, :create]
 
     def index

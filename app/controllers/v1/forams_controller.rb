@@ -2,7 +2,6 @@ module V1
   class ForamsController < ApplicationController
     include ActionController::MimeResponds
 
-    before_action :authenticate_user
     before_action :set_foram, only: :show
     around_action :check_mongo_session_connection
 
@@ -10,7 +9,7 @@ module V1
       if params[:foram_filter_id]
         forams = ForamFilter.find(params[:foram_filter_id]).forams(user: current_user, order: ordering_params)
       else
-        forams = ForamFilter.new(params[:foram_filter]).forams(user: current_user, order: ordering_params)
+        forams = ForamFilter.new(foram_filter_params).forams(user: current_user, order: ordering_params)
       end
 
       respond_to do |format|
@@ -43,6 +42,11 @@ module V1
 
     def ordering_params
       params.permit(:order_by, :direction)
+    end
+
+    def foram_filter_params
+      attributes = ForamFilter.attributes_map(Foram.for_user(current_user)).keys
+      params.select { |param| attributes.include? param }.to_hash
     end
   end
 end

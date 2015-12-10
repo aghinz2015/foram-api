@@ -1,6 +1,6 @@
 module V1
   class SessionsController < ApplicationController
-    before_action :authenticate_user!, except: :create
+    skip_before_action :authenticate_user!, only: :create
 
     def create
       user = User.where(email: create_params[:email]).first

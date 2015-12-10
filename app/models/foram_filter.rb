@@ -14,20 +14,14 @@ class ForamFilter
     ordered_scope(ranged_attributes_scope(forams), order)
   end
 
-  def self.params(user: nil, camelize: false)
-    names = []
-    foram = for_user(user).first
-    attribute_names = foram.attributes.keys + foram.genotype.attributes.keys.map{ |k| "genotype.#{k}"} rescue []
-    attribute_names.each do |name|
-      case foram.read_attibute(name)
-      when Array, Numeric
-        names << "#{name}_max"
-        names << "#{name}_min"
-      when TrueClass, FalseClass
-        names << name
-      end
-    end
-    camelize ? names : names.map(&:underscore)
+  def self.attributes_map(scope)
+    @names_map = {}
+    @foram = scope.first
+    return @names_map if @foram.nil? || @foram[:genotype].nil?
+
+    @foram.attributes.keys.map(&:to_s).each { |name| map_attribute name, name }
+    @foram.genotype.attributes.keys.map(&:to_s).each { |name| map_attribute name, "genotype.#{name}" }
+    @names_map.transform_keys { |key| key.underscore }
   end
 
   def ordered_scope(forams, ordering_params)
@@ -40,6 +34,21 @@ class ForamFilter
       forams.order_by(forams.find_mapping(order_by) => direction.to_sym)
     else
       forams
+    end
+  end
+
+  private
+
+  def self.map_attribute(name, path)
+    case @foram.read_attribute path
+    when Array
+      @names_map["#{name}_max"] = "#{path}.0"
+      @names_map["#{name}_min"] = "#{path}.0"
+    when Numeric
+      @names_map["#{name}_max"] = path
+      @names_map["#{name}_min"] = path
+    when TrueClass, FalseClass
+      @names_map[name.underscore] = path
     end
   end
 end

@@ -1,6 +1,5 @@
 module V1
   class SettingsSetsController < ApplicationController
-    before_action :authenticate_user!
     before_action :set_settings_set
 
     def show
