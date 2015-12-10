@@ -1,8 +1,9 @@
 class GenerationSummaryGenerator
-  attr_reader :grouping_parameter, :start, :stop, :genes
+  attr_reader :grouping_parameter, :user, :start, :stop, :genes
 
-  def initialize(grouping_parameter, options = {})
+  def initialize(grouping_parameter, user, options = {})
     @grouping_parameter = grouping_parameter
+    @user = user
     @genes = options[:genes]
     @start = options[:start].to_i if options[:start]
     @stop = options[:stop].to_i if options[:stop]
@@ -24,7 +25,7 @@ class GenerationSummaryGenerator
       criteria = {}
       criteria["#{grouping_parameter}_min"] = start if start
       criteria["#{grouping_parameter}_max"] = stop if stop
-      GenerationMetricCalculator.new(ForamFilter.new(criteria).forams, grouping_parameter, genes)
+      GenerationMetricCalculator.new(ForamFilter.new(criteria).forams(user: user), grouping_parameter, genes)
     end
   end
 end

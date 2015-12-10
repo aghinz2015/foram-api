@@ -71,4 +71,8 @@ class Foram
   def deathStepNo # TODO tymczasowy fix
     death_hour
   end
+
+  def death_step_no
+    death_hour
+  end
 end

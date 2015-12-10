@@ -1,12 +1,13 @@
 module V1
   class GenerationsController < ApplicationController
     before_action :set_grouping_parameter
+    before_action :authenticate_user!
 
     ALLOWED_GROUPING_PARAMETERS = %w(death_step_no age generation)
 
 
     def index
-      summary_generator = GenerationSummaryGenerator.new(@grouping_parameter, summary_params)
+      summary_generator = GenerationSummaryGenerator.new(@grouping_parameter, current_user, summary_params)
       render json: { result: summary_generator.summary }
     end
 
