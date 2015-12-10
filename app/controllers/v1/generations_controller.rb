@@ -3,7 +3,7 @@ module V1
     before_action :set_grouping_parameter
     before_action :authenticate_user!
 
-    ALLOWED_GROUPING_PARAMETERS = %w(death_step_no age generation)
+    ALLOWED_GROUPING_PARAMETERS = %w(death_hour age generation)
 
 
     def index
@@ -21,7 +21,7 @@ module V1
       @grouping_parameter = if params[:group_by] && ALLOWED_GROUPING_PARAMETERS.include?(params[:group_by])
                               params[:group_by]
                             else
-                              :death_step_no
+                              :death_hour
                             end
     end
   end

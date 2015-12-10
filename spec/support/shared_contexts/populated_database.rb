@@ -7,7 +7,7 @@ shared_context 'populated database' do
       Fabricate(:foram) do
         x { sequence(:x) }
         age { sequence(:age) { |i| 20 + i / 5 } }
-        death_step_no { sequence(:death_step_no) { |i| 30 + i / 2 } }
+        death_hour { sequence(:death_hour) { |i| 30 + i / 2 } }
         is_diploid { sequence(:is_diploid) { |i| i % 2 == 0 } }
         genotype { sequence(:genotype) { |i| Fabricate.build(:genotype, is_diploid: (i % 2 == 0), range: i..i) } }
       end

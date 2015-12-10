@@ -65,14 +65,6 @@ class Foram
   end
 
   def generation
-    deathStepNo - age
-  end
-
-  def deathStepNo # TODO tymczasowy fix
-    death_hour
-  end
-
-  def death_step_no
-    death_hour
+    death_hour - age
   end
 end
