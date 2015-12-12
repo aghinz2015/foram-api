@@ -63,8 +63,4 @@ class Foram
       ].join(",")
     end.join("\n\n")
   end
-
-  def generation
-    death_hour - age
-  end
 end

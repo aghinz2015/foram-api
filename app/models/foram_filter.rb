@@ -26,7 +26,7 @@ class ForamFilter
 
   def ordered_scope(forams, ordering_params)
     return forams unless ordering_params && ordering_params[:order_by]
-    order_by = ordering_params[:order_by]
+    order_by = ordering_params[:order_by].camelize(:lower)
 
     if forams.all_attribute_names(camelize: true).include?(order_by)
       direction = ordering_params[:direction]

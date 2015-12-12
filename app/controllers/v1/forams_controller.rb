@@ -46,7 +46,7 @@ module V1
 
     def foram_filter_params
       attributes = ForamFilter.attributes_map(Foram.for_user(current_user)).keys
-      params.select { |param| attributes.include? param }.to_hash
+      params.slice(*attributes).to_hash
     end
   end
 end

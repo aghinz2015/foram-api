@@ -2,7 +2,7 @@ module V1
   class GenerationsController < ApplicationController
     before_action :set_grouping_parameter
 
-    ALLOWED_GROUPING_PARAMETERS = %w(death_hour age generation)
+    ALLOWED_GROUPING_PARAMETERS = %w(death_hour age)
 
 
     def index
