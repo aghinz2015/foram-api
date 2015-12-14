@@ -25,7 +25,7 @@ class DeathCoordinatesAccumulator
     else
       counters = Hash.new { |hash, key| hash[key] = Hash.new(0) }
 
-      z_param = type == :bubble ? :z : :death_step_no
+      z_param = type == :bubble ? :z : :death_hour
       forams.each { |foram| counters[[foram.x, foram.y]][foram.send(z_param)] += 1 }
 
       formatted_counters_for_bubbles(counters)

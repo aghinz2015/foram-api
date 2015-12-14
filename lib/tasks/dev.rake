@@ -13,6 +13,8 @@ namespace :dev do
 
         is_diploid       { rand > 0.5 }
         genotype         { |foram| Fabricate.build(:genotype, is_diploid: foram[:is_diploid]) }
+        first_parent_id  { nil }
+        second_parent_id { nil }
       end
     end
 

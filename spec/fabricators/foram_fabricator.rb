@@ -9,6 +9,8 @@ Fabricator(:foram) do
   y                { Faker::Number.number(1).to_i }
   z                { Faker::Number.number(1).to_i }
   simulation_start { Time.now - rand(50) }
+  first_parent_id  { nil }
+  second_parent_id { nil }
 
   genotype         { |foram| Fabricate.build(:genotype, is_diploid: foram[:isDiploid]) }
 end
