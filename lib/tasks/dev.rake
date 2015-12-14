@@ -8,8 +8,9 @@ namespace :dev do
       Foram.destroy_all
 
       Fabricate.times(1000, :foram) do
-        death_hour  Faker::Number.between(30, 50)
-        age         Faker::Number.between(5, 15)
+        death_hour        Faker::Number.between(30, 50)
+        age               Faker::Number.between(5, 15)
+        chambers_count    Faker::Number.between(3, 10)
 
         is_diploid       { rand > 0.5 }
         genotype         { |foram| Fabricate.build(:genotype, is_diploid: foram[:is_diploid]) }

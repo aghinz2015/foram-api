@@ -24,7 +24,7 @@ class DescendantsFetcher
   end
 
   def descendants_hash(foram, level)
-    result = { id: foram.id.to_s, genotype: serialized_genotype(foram) }
+    result = { id: foram.id.to_s, genotype: serialized_genotype(foram), chambersCount: foram.chambers_count }
     if level > 0
       children = children_array(foram)
       children_hashes = []
