@@ -1,78 +1,78 @@
 models:
   foram:
-    haploid_juvenile_volume_factor:
+    haploidJuvenileVolumeFactor:
       range:
         min: 0.0
         max: 10.0
-    haploid_first_chamber_radius:
+    haploidFirstChamberRadius:
       range:
         min: 0.0
         max: 10.0
-    chamber_growth_cost_factor:
+    chamberGrowthCostFactor:
       range:
         min: 0.0
         max: 1.0
-    energy_demand_per_chamber:
+    energyDemandPerChamber:
       range:
         min: 0.0
         max: 1.0
-    min_adult_volume:
+    minAdultVolume:
       range:
         min: 10
         max: 100
-    min_adult_age:
+    minAdultAge:
       range:
         min: 100
         max: 900
-    wall_thickness_factor:
+    wallThicknessFactor:
       range:
         min: 0.0
         max: 0.04
-    min_energy:
+    minEnergy:
       range:
         min: 5
         max: 50
-    metabolic_effectiveness:
+    metabolicEffectiveness:
       range:
         min: 0.0
         max: 1.0
-    diploid_juvenile_volume_factor:
+    diploidJuvenileVolumeFactor:
       range:
         min: 0.0
         max: 10.0
-    diploid_first_chamber_radius:
+    diploidFirstChamberRadius:
       range:
         min: 0.0
         max: 10.0
-    hibernation_energy_consumption:
+    hibernationEnergyConsumption:
       range:
         min: 0.1
         max: 1.0
-    translation_factor:
+    translationFactor:
       range:
         min: -1.0
         max: 1.0
-    growth_factor:
+    growthFactor:
       range:
         min: 1.0
         max: 2.0
-    hibernation_energy_level:
+    hibernationEnergyLevel:
       range:
         min: 1.0
         max: 10.0
-    rotation_angle:
+    rotationAngle:
       range:
         min: -3.1415
         max: 3.1415
-    deviation_angle:
+    deviationAngle:
       range:
         min: -3.1415
         max: 3.1415
-    min_metabolic_effectiveness:
+    minMetabolicEffectiveness:
       range:
         min: 1.0
         max: 10.0
-    max_energy_per_chamber:
+    maxEnergyPerChamber:
       range:
         min: 1.0
         max: 10.0

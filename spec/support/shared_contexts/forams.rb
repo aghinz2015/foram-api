@@ -10,18 +10,18 @@ shared_context 'forams' do
     [
       Fabricate(:genotype,
         foram:              forams[0],
-        translation_factor: [0.1, 0.2, 0.3],
-        growth_factor:      [0.2, 0.3, 0.4],
-        rotation_angle:     [0.3, 0.4, 0.5],
-        deviation_angle:    [0.4, 0.5, 0.6]
+        translationFactor:  [0.1, 0.2, 0.3],
+        growthFactor:       [0.2, 0.3, 0.4],
+        rotationAngle:      [0.3, 0.4, 0.5],
+        deviationAngle:     [0.4, 0.5, 0.6]
       ),
 
       Fabricate(:genotype,
         foram:              forams[1],
-        translation_factor: [0.5, 0.6, 0.7],
-        growth_factor:      [0.6, 0.7, 0.8],
-        rotation_angle:     [0.7, 0.8, 0.9],
-        deviation_angle:    [0.8, 0.9, 1.0]
+        translationFactor:  [0.5, 0.6, 0.7],
+        growthFactor:       [0.6, 0.7, 0.8],
+        rotationAngle:      [0.7, 0.8, 0.9],
+        deviationAngle:     [0.8, 0.9, 1.0]
       )
     ]
   end

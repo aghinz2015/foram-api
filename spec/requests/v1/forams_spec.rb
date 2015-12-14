@@ -3,8 +3,13 @@ require 'rails_helper'
 describe 'Forams' do
   include_context 'forams'
 
+  let(:user) { Fabricate(:user) }
+  before do
+    login(user)
+  end
+
   describe 'GET /forams' do
-    before { get '/forams' }
+    before { get '/forams', nil, { "HTTP_AUTHORIZATION" => @token_header } }
 
     let(:expected_forams) do
       {
@@ -81,7 +86,7 @@ describe 'Forams' do
   end
 
   describe 'GET /forams/:id' do
-    before { get "/forams/#{foram_id}" }
+    before { get "/forams/#{foram_id}", nil, { "HTTP_AUTHORIZATION" => @token_header } }
 
     context "when foram exists" do
       let(:foram_id) { 'f1' }
