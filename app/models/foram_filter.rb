@@ -9,8 +9,9 @@ class ForamFilter
 
   validates :user, presence: true
 
-  def forams(user: nil, order: nil)
-    forams = boolean_attributes_scope(Foram.for_user(user))
+  def forams(user: nil, order: nil, simulation_start: nil)
+    forams = Foram.for_user(user).simulation_start(simulation_start)
+    forams = boolean_attributes_scope(forams)
     ordered_scope(ranged_attributes_scope(forams), order)
   end
 

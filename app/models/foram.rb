@@ -5,6 +5,8 @@ class Foram
 
   embeds_one :genotype
 
+  scope :simulation_start, ->(id) { where(simulationStart: id.try(:to_i)) if id }
+
   def method_missing(method, *args, &block)
     if respond_to?(method_name = method.to_s.underscore.to_sym)
       super method_name, *args, &block

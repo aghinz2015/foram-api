@@ -13,7 +13,7 @@ module V1
     private
 
     def summary_params
-      params.permit(:start, :stop, genes: [])
+      params.permit(:simulation_start, :start, :stop, genes: [])
     end
 
     def set_grouping_parameter

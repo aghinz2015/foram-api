@@ -1,5 +1,6 @@
 module V1
   class DescendantsController < ApplicationController
+    include ForamScoping
     before_action :set_foram
 
     def index
@@ -9,7 +10,7 @@ module V1
     private
 
     def descendants_fetcher
-      DescendantsFetcher.new(Foram.for_user(current_user))
+      DescendantsFetcher.new foram_scoping
     end
 
     def descendants_params
@@ -17,7 +18,7 @@ module V1
     end
 
     def set_foram
-      @foram = Foram.for_user(current_user).find(params[:foram_id])
+      @foram = foram_scoping.find(params[:foram_id])
     end
   end
 end

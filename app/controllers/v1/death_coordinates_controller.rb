@@ -1,7 +1,9 @@
 module V1
   class DeathCoordinatesController < ApplicationController
+    include ForamScoping
+
     def index
-      render json: death_coordinates(Foram.for_user(current_user))
+      render json: death_coordinates(foram_scoping)
     end
 
     private

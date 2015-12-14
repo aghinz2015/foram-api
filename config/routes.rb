@@ -9,7 +9,10 @@ Rails.application.routes.draw do
       resource :settings_set, only: [:show, :update]
     end
     resources :forams, only: [:show, :index] do
-      get :attribute_names, on: :collection
+      collection do
+        get :attribute_names
+        get :simulation_starts
+      end
       resources :descendants, only: :index
     end
     resources :generations, only: :index

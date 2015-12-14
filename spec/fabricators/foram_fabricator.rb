@@ -8,7 +8,7 @@ Fabricator(:foram) do
   x                { Faker::Number.number(1).to_i }
   y                { Faker::Number.number(1).to_i }
   z                { Faker::Number.number(1).to_i }
-  simulationStart  { Time.now - rand(50) }
+  simulationStart  { rand(5) }
   firstParentId    { nil }
   secondParentId   { nil }
 
