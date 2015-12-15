@@ -50,7 +50,7 @@ class DeathCoordinatesAccumulator
     result = []
 
     z_array = counters.values.map(&:keys).flatten(1).uniq.sort
-    z_range = (z_array.first..z_array.last)
+    z_range = (z_array.first.to_i..z_array.last.to_i)
 
 
     counters.each do |(x, y), z_hash|
