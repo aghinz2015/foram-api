@@ -36,11 +36,22 @@ class DeathCoordinatesAccumulator
     result = []
     sum = counters.values.sum
 
+    x_set = Set.new
+    y_set = Set.new
+    z_set = Set.new
+
     counters.each do |(x, y, z), size|
+      x_set << x
+      y_set << y
+      z_set << z
+
       fraction = size / sum.to_f
       radius = fraction * DEFAULT_RADIUS * ENLARGING_FACTOR
 
-      result << { x: x, y: y, z: z, size: size, marker: { radius: radius } }
+      result << { x: x, y: y, z: z, size: size, marker: { radius: radius }
+                  x_min: x_set.min, x_max: x_set.max,
+                  y_min: y_set.min, y_max: y_set.max,
+                  z_min: z_set.min, z_max: z_set.max }
     end
 
     result
