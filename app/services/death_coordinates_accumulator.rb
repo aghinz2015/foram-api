@@ -52,8 +52,14 @@ class DeathCoordinatesAccumulator
     z_array = counters.values.map(&:keys).flatten(1).uniq.sort
     z_range = (z_array.first.to_i..z_array.last.to_i)
 
+    #because we might use limited forams collection, we dont't use global model #min and #max
+    x_set = Set.new
+    y_set = Set.new
 
     counters.each do |(x, y), z_hash|
+      x_set << x
+      y_set << y
+
       entry = { name: "x: #{x}, y: #{y}" }
       entry[:x] = z_range.map { |z| [z, x] }
       entry[:y] = z_range.map { |z| [z, y] }
@@ -61,6 +67,8 @@ class DeathCoordinatesAccumulator
       result << entry
     end
 
-    { data: result, z_min: z_range.first, z_max: z_range.last }
+    { data: result, z_min: z_range.first, z_max: z_range.last,
+                    x_min: x_set.min, x_max: x_set.max,
+                    y_min: y_set.min, y_max: y_set.max }
   end
 end
