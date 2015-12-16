@@ -48,13 +48,15 @@ class DeathCoordinatesAccumulator
       fraction = size / sum.to_f
       radius = fraction * DEFAULT_RADIUS * ENLARGING_FACTOR
 
-      result << { x: x, y: y, z: z, size: size, marker: { radius: radius }
-                  x_min: x_set.min, x_max: x_set.max,
-                  y_min: y_set.min, y_max: y_set.max,
-                  z_min: z_set.min, z_max: z_set.max }
+      result << { x: x, y: y, z: z, size: size, marker: { radius: radius } }
     end
 
-    result
+    {
+      x_min: x_set.min, x_max: x_set.max,
+      y_min: y_set.min, y_max: y_set.max,
+      z_min: z_set.min, z_max: z_set.max,
+      data: result
+    }
   end
 
   def formatted_counters_for_bubbles(counters)
