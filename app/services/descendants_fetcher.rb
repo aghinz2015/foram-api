@@ -16,7 +16,7 @@ class DescendantsFetcher
   def children_array(foram)
     foram_id = foram.foram_id
 
-    forams.where(first_parent_id: foram_id) + forams.where(second_parent_id: foram_id)
+    forams.where(firstParentId: foram_id) + forams.where(secondParentId: foram_id)
   end
 
   def serialized_genotype(foram)
