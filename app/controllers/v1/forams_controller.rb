@@ -37,7 +37,7 @@ module V1
     private
 
     def set_foram
-      @foram = foram_scoping.find(params[:id])
+      @foram = foram_scope.find(params[:id])
     end
 
     def check_mongo_session_connection

@@ -3,7 +3,7 @@ module V1
     include ForamScoping
 
     def index
-      render json: death_coordinates(foram_scoping)
+      render json: death_coordinates(foram_scope), serializer: HashSerializer, root: false
     end
 
     private

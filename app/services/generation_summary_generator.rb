@@ -26,7 +26,8 @@ class GenerationSummaryGenerator
       criteria = {}
       criteria["#{grouping_parameter}_min"] = start if start
       criteria["#{grouping_parameter}_max"] = stop if stop
-      GenerationMetricCalculator.new(ForamFilter.new(criteria).forams(user: user).simulation_start(simulation_start), grouping_parameter, genes)
+      forams = ForamFilter.new(criteria).forams(user: user).simulation_start(simulation_start)
+      GenerationMetricCalculator.new(forams, grouping_parameter, genes)
     end
   end
 end

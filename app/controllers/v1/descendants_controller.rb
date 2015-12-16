@@ -4,13 +4,15 @@ module V1
     before_action :set_foram
 
     def index
-      render json: descendants_fetcher.fetch_descendants(@foram, descendants_params)
+      render json: descendants_fetcher.fetch_descendants(@foram, descendants_params),
+             serializer: HashSerializer,
+             root: false
     end
 
     private
 
     def descendants_fetcher
-      DescendantsFetcher.new foram_scoping
+      DescendantsFetcher.new foram_scope
     end
 
     def descendants_params
@@ -18,7 +20,7 @@ module V1
     end
 
     def set_foram
-      @foram = foram_scoping.find(params[:foram_id])
+      @foram = foram_scope.find(params[:foram_id])
     end
   end
 end
