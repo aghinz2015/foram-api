@@ -15,7 +15,13 @@ module ErrorMessages
   end
 
   def error_message_for_500
-    'Internal server error'
+    case exception
+    when Moped::Errors::ConnectionFailure
+      hosts = current_user.active_mongo_session.try(:hosts) || ['localhost:27017']
+      I18n.t('errors.mongo_sessions.connection_failure', ip_addresses: hosts)
+    else
+      'Internal server error'
+    end
   end
 
   private

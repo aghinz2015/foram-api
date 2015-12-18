@@ -30,10 +30,7 @@ class User
   end
 
   def active_mongo_session
-    @active_mongo_session ||= begin
-      session_id = mongo_sessions.active.last.try { |session| session.id.to_s }
-      mongo_sessions.find(session_id) if session_id
-    end
+    @active_mongo_session ||= mongo_sessions.active.last
   end
 
   private

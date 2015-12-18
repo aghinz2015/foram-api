@@ -4,7 +4,6 @@ module V1
     include ForamScoping
 
     before_action :set_foram, only: :show
-    around_action :check_mongo_session_connection
 
     def index
       if params[:foram_filter_id]
@@ -38,13 +37,6 @@ module V1
 
     def set_foram
       @foram = foram_scope.find(params[:id])
-    end
-
-    def check_mongo_session_connection
-      yield
-    rescue Moped::Errors::ConnectionFailure
-      error = I18n.t("errors.mongo_sessions.connection_failure", ip_addresses: session.hosts)
-      render json: { error: error }, status: :unprocessable_entity
     end
 
     def ordering_params
