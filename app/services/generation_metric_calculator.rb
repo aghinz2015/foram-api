@@ -102,7 +102,8 @@ class GenerationMetricCalculator
           average = (attribute_hash[:sum].to_f / size)
           attribute_hash[:average] = average
           variance = (attribute_hash[:sum_of_squares].to_f / size) - average * average
-          standard_deviation = Math.sqrt(variance)
+          # Due to floting point errors while subtracting very small numbers variance can be negative which is incorrect
+          standard_deviation = Math.sqrt(variance) rescue 0
           attribute_hash[:plus_standard_deviation] = average + standard_deviation
           attribute_hash[:minus_standard_deviation] = average - standard_deviation
         else
