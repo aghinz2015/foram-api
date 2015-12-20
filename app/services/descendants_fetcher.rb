@@ -23,12 +23,14 @@ class DescendantsFetcher
     foram.genotype.serializable_hash.except("_id")
   end
 
-  def descendants_hash(foram, level)
-    result = { id: foram.id.to_s, genotype: serialized_genotype(foram), chambersCount: foram.chambers_count }
+  def descendants_hash(foram, level, parent_id = nil)
+    id = foram.id.to_s
+    result = { id: id, genotype: serialized_genotype(foram), chambers_count: foram.chambers_count }
+    result[:parent_id] = parent_id if parent_id
     if level > 0
       children = children_array(foram)
       children_hashes = []
-      children.each { |child| children_hashes << descendants_hash(child, level - 1) }
+      children.each { |child| children_hashes << descendants_hash(child, level - 1, id) }
       result[:children] = children_hashes unless children_hashes.empty?
     end
 
