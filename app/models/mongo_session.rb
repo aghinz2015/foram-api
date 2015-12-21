@@ -34,13 +34,11 @@ class MongoSession
   private
 
   def session_configuration
-    {
-      database: database,
-      hosts: hosts,
-      username: username,
-      password: Encryptor.new.decrypt(encrypted_password),
-      foram_collection: foram_collection
-    }
+    conf = { database: database, hosts: hosts, foram_collection: foram_collection }
+    if encrypted_password.present?
+      conf.merge!({ username: username, password: Encryptor.new.decrypt(encrypted_password) })
+    end
+    conf
   end
 
   def deactivate_other_sessions
