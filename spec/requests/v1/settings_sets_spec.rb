@@ -14,6 +14,7 @@ describe V1::SettingsSetsController do
       let(:user) { Fabricate(:user) }
       let(:expected_json) do
         { settings_set: { number_precision: user.settings_set.number_precision,
+                          tree_level: user.settings_set.tree_level,
                           mappings: user.settings_set.mappings }
         }
       end
