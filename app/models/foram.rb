@@ -32,6 +32,16 @@ class Foram
     camelize ? names : names.map(&:underscore)
   end
 
+  def self.filterable_attribute_names(user: nil, camelize: false, only_numeric: false)
+    types = [Array, Numeric]
+    types.concat [TrueClass, FalseClass] unless only_numeric
+    foram = for_user(user).first
+    attributes = foram.attributes.merge! foram.genotype.attributes
+
+    names = attributes.select { |key, value| types.any? { |type| value.is_a? type } }.keys
+    camelize ? names : names.map(&:underscore)
+  end
+
   def self.find_mapping(attribute, user: nil)
     foram = for_user(user).first
     if foram.attributes.keys.include? attribute

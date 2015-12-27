@@ -34,7 +34,8 @@ module V1
     end
 
     def attribute_names
-      render json: ForamFilter.attributes_map(Foram.for_user(current_user)).keys
+      only_numeric = params[:only_numeric] == 'true' ? true : false
+      render json: Foram.filterable_attribute_names(user: current_user, only_numeric: only_numeric), root: :attributes
     end
 
     private
