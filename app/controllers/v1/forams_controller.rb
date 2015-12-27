@@ -16,8 +16,10 @@ module V1
 
       respond_to do |format|
         format.json { paginate json: forams, per_page: current_user.settings_set.per_page }
-        format.csv  { render csv: forams }
-        format.gen  { render gen: forams }
+        format.any(:gen, :csv) do
+          creator = FileCreator.new(forams, format: params[:format])
+          send_file creator.file.path, type: creator.content_type
+        end
       end
     end
 

@@ -64,7 +64,7 @@ class Foram
     end
   end
 
-  def self.to_csv(options)
+  def self.to_csv(options = {})
     attributes = all.all_attribute_names(camelize: true)
     CSV.generate(headers: true) do |csv|
       csv << attributes
@@ -74,7 +74,7 @@ class Foram
     end
   end
 
-  def self.to_gen(options)
+  def self.to_gen(options = {})
     all.map do |foram|
       genotype = foram.genotype
       gf = genotype.growth_factor.effective
