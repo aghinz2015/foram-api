@@ -29,6 +29,13 @@ module V1
       render json: Foram.all_attribute_names(user: current_user)
     end
 
+    def attribute_stats
+      forams = ForamFilter.new(foram_filter_params)
+                          .forams(user: current_user, order: ordering_params)
+                          .simulation_start(params[:simulation_start])
+      render json: forams.attribute_stats(params[:attribute])
+    end
+
     def simulation_starts
       render json: { simulation_starts: Foram.for_user(current_user).pluck(:simulationStart).uniq }
     end

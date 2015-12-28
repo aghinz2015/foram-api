@@ -53,6 +53,17 @@ class Foram
     end
   end
 
+  def self.attribute_stats(attribute)
+    attribute = attribute.to_s.camelize(:lower)
+    forams = all
+    if forams.first.genotype.attributes.keys.include? attribute
+      attribute = "genotype.#{attribute}"
+      { max: forams.max(attribute).first, min: forams.min(attribute).first }
+    else
+      { max: forams.max(attribute), min: forams.min(attribute) }
+    end
+  end
+
   def self.to_csv(options)
     attributes = all.all_attribute_names(camelize: true)
     CSV.generate(headers: true) do |csv|

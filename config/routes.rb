@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     resources :forams, only: [:show, :index] do
       collection do
         get :attribute_names
+        get :attribute_stats
         get :simulation_starts
       end
       resources :descendants, only: :index
