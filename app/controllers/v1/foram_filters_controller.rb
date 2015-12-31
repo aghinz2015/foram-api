@@ -35,7 +35,11 @@ module V1
 
     def attribute_names
       only_numeric = params[:only_numeric] == 'true' ? true : false
-      render json: Foram.filterable_attribute_names(user: current_user, only_numeric: only_numeric), root: :attributes
+      only_genotype = params[:only_genotype] == 'true' ? true : false
+      render json: Foram.filterable_attribute_names(user: current_user,
+                                                    only_numeric: only_numeric
+                                                    only_genotype: only_genotype),
+             root: :attributes
     end
 
     private
