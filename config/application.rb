@@ -26,6 +26,8 @@ module ForamApi
       end
     end
 
+    config.middleware.use Rack::Deflater
+
     config.autoload_paths += %W(
       #{config.root}/app/services
       #{config.root}/lib
