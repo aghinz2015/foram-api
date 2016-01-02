@@ -17,7 +17,7 @@ module V1
     private
 
     def settings_set_params
-      params.require(:settings_set).permit(:number_precision, :tree_level).tap do |whitelisted|
+      params.require(:settings_set).permit(:number_precision, :tree_level, :per_page).tap do |whitelisted|
         whitelisted[:mappings] = params[:settings_set][:mappings]
       end
     end

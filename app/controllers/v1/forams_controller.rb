@@ -15,7 +15,7 @@ module V1
                            .simulation_start(params[:simulation_start])
 
       respond_to do |format|
-        format.json { paginate json: forams }
+        format.json { paginate json: forams, per_page: current_user.settings_set.per_page }
         format.csv  { render csv: forams }
         format.gen  { render gen: forams }
       end

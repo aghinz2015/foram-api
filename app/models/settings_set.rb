@@ -5,9 +5,10 @@ class SettingsSet
 
   field :number_precision,        type: Integer, default: 4
   field :tree_level,              type: Integer, default: 4
+  field :per_page,                type: Integer, default: 20
   field :mappings,                type: Hash,    default: {}
 
-  validates_presence_of :number_precision, :tree_level
+  validates_presence_of :number_precision, :tree_level, :per_page
   validate :mappings_format
 
   private
