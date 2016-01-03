@@ -15,6 +15,7 @@ describe V1::SettingsSetsController do
       let(:expected_json) do
         { settings_set: { number_precision: user.settings_set.number_precision,
                           tree_level: user.settings_set.tree_level,
+                          per_page: user.settings_set.per_page,
                           mappings: user.settings_set.mappings }
         }
       end
