@@ -34,8 +34,8 @@ module V1
     end
 
     def attribute_names
-      only_numeric = params[:only_numeric] == 'true' ? true : false
-      only_genotype = params[:only_genotype] == 'true' ? true : false
+      only_numeric = params[:only_numeric] == 'true'
+      only_genotype = params[:only_genotype] == 'true'
       render json: Foram.filterable_attribute_names(user: current_user,
                                                     only_numeric: only_numeric,
                                                     only_genotype: only_genotype),

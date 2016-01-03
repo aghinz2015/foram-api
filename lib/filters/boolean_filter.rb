@@ -6,7 +6,7 @@ module Filters::BooleanFilter
     boolean_attributes.each do |name|
       value = send(name) rescue nil
       # TODO:0 think about how to cast to boolean
-      value = value == 'true' ? true : false
+      value = value == 'true'
       field = attributes_map[name]
       conditions.deep_merge!(field => value) unless value.nil?
     end
