@@ -10,7 +10,7 @@ module V1
       if @settings_set.update(settings_set_params)
         render json: @settings_set
       else
-        head :unprocessable_entity
+        render json: @settings_set.errors, status: :unprocessable_entity
       end
     end
 

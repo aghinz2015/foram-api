@@ -8,7 +8,8 @@ class SettingsSet
   field :per_page,                type: Integer, default: 20
   field :mappings,                type: Hash,    default: {}
 
-  validates_presence_of :number_precision, :tree_level, :per_page
+  validates :number_precision, :tree_level, :per_page, presence: true,
+            numericality: { only_integer: true, greater_than: 0 }
   validate :mappings_format
 
   private
