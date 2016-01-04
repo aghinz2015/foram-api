@@ -33,7 +33,7 @@ module V1
 
     def attribute_stats
       forams = ForamFilter.new(foram_filter_params)
-                          .forams(user: current_user, order: ordering_params)
+                          .forams(user: current_user)
                           .simulation_start(params[:simulation_start])
       render json: forams.attribute_stats(params[:attribute])
     end

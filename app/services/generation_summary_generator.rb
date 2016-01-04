@@ -1,9 +1,10 @@
 class GenerationSummaryGenerator
-  attr_reader :grouping_parameter, :user, :simulation_start, :start, :stop, :genes
+  attr_reader :grouping_parameter, :user, :criteria, :simulation_start, :start, :stop, :genes
 
-  def initialize(grouping_parameter, user, options = {})
+  def initialize(grouping_parameter, user, criteria, options = {})
     @grouping_parameter = grouping_parameter
     @user = user
+    @criteria = criteria
     @simulation_start = options[:simulation_start]
     @genes = options[:genes]
     @start = options[:start].to_i if options[:start]
@@ -23,9 +24,8 @@ class GenerationSummaryGenerator
 
   def metrics_calculator
     @metrics_calculator ||= begin
-      criteria = {}
-      criteria["#{grouping_parameter}_min"] = start if start
-      criteria["#{grouping_parameter}_max"] = stop if stop
+      @criteria["#{grouping_parameter}_min"] = start if start
+      @criteria["#{grouping_parameter}_max"] = stop if stop
       forams = ForamFilter.new(criteria).forams(user: user).simulation_start(simulation_start)
       GenerationMetricCalculator.new(forams, grouping_parameter, genes)
     end

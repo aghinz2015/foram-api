@@ -6,7 +6,7 @@ module V1
 
 
     def index
-      summary_generator = GenerationSummaryGenerator.new(@grouping_parameter, current_user, summary_params)
+      summary_generator = GenerationSummaryGenerator.new(@grouping_parameter, current_user, foram_filter_params, summary_params)
       render json: { result: summary_generator.summary }
     end
 
@@ -14,6 +14,11 @@ module V1
 
     def summary_params
       params.permit(:simulation_start, :start, :stop, genes: [])
+    end
+
+    def foram_filter_params
+      attributes = ForamFilter.attributes_map(Foram.for_user(current_user)).keys
+      params.slice(*attributes).to_hash
     end
 
     def set_grouping_parameter

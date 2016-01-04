@@ -169,9 +169,8 @@ class GenerationMetricCalculator
         globals_hash[gene][type] = {}
 
         type_values_hash = metrics_hash[gene_key][type]
-
-        globals_hash[gene][type][:min] = type_values_hash[:min].min
-        globals_hash[gene][type][:max] = type_values_hash[:max].max
+        globals_hash[gene][type][:min] = type_values_hash[:min].compact.min
+        globals_hash[gene][type][:max] = type_values_hash[:max].compact.max
 
         sum_of_values = 0
         sum_of_sizes = 0
