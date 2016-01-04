@@ -19,7 +19,7 @@ module V1
       if @session.update(session_params)
         render json: @session
       else
-        render json: @session, status: :unprocessable_entity
+        render json: @session.errors, status: :unprocessable_entity
       end
     end
 
