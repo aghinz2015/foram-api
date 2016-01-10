@@ -78,7 +78,7 @@ class DeathCoordinatesAccumulator
       fraction = size / sum.to_f
       radius = fraction * DEFAULT_RADIUS * ENLARGING_FACTOR
 
-      result << { x: x, y: y, z: z, size: size, marker: { radius: radius } }
+      result << { x: x, y: y, z: z, size: size, marker: { radius: radius.round(2) } }
     end
 
     { data: result }
