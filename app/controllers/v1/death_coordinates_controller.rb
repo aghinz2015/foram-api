@@ -13,7 +13,7 @@ module V1
     end
 
     def type
-      params[:type] || :bubble
+      params[:type] || "2d_z"
     end
   end
 end

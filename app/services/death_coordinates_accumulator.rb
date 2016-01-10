@@ -6,7 +6,7 @@ class DeathCoordinatesAccumulator
 
   def initialize(forams, type)
     @forams = forams
-    @type = type
+    @type = type.to_s
   end
 
   def data_hash
@@ -21,7 +21,7 @@ class DeathCoordinatesAccumulator
       y_min: forams.min(:y), y_max: forams.max(:y)
     }
 
-    if type == :three_dimensions
+    if type == "3d"
       counters = {}
       range_hash[:z_min] = forams.min(:z)
       range_hash[:z_max] = forams.max(:z)
@@ -44,7 +44,7 @@ class DeathCoordinatesAccumulator
     else
       counters = Hash.new { |hash, key| hash[key] = Hash.new(0) }
 
-      z_param = type == :bubble ? :z : :deathHour
+      z_param = type == "2d_z" ? :z : :deathHour
       range_hash[:z_min] = forams.min(z_param)
       range_hash[:z_max] = forams.max(z_param)
 
