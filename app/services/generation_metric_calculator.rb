@@ -1,15 +1,15 @@
 class GenerationMetricCalculator
-  attr_reader :forams, :grouping_parameter, :genes, :generations
+  attr_reader :forams, :grouping_parameter, :genes, :generations, :precision
 
-  PRECISION = 2
   ATTRIBUTE_TYPES = %i(effective first_set second_set)
 
-  def initialize(forams, grouping_parameter, genes, start: nil, stop: nil)
+  def initialize(forams, grouping_parameter, genes, precision, start: nil, stop: nil)
     @forams = forams
     @grouping_parameter = grouping_parameter
     @genes = genes
     @start = start
     @stop = stop
+    @precision = precision
   end
 
   def generation_metrics
@@ -138,7 +138,7 @@ class GenerationMetricCalculator
             sizes_hash[gene][attribute_type][generation_number] = size
 
             value = metrics_hash[generation_number][gene][attribute_type][statistic]
-            value = value.round(PRECISION) if value
+            value = value.round(precision) if value
             statistic_array << value
           end
           if %i(plus_standard_deviation minus_standard_deviation).include?(statistic)
@@ -186,7 +186,7 @@ class GenerationMetricCalculator
         end
 
         if sum_of_sizes > 0
-          globals_hash[gene][type][:average] = (sum_of_values.to_f / sum_of_sizes).round(PRECISION)
+          globals_hash[gene][type][:average] = (sum_of_values.to_f / sum_of_sizes).round(precision)
         else
           globals_hash[gene][type][:average] = nil
         end
