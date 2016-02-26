@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe GenerationMetricCalculator do
   describe "#generation_metrics" do
-    subject { GenerationMetricCalculator.new(Foram.all, :death_hour, ["growthFactor", "rotationAngle"]) }
+    subject { GenerationMetricCalculator.new(Foram.all, :death_hour, ["growthFactor", "rotationAngle"], 1) }
 
     let(:good_luck_and_have_fun) do
       {
@@ -139,7 +139,10 @@ describe GenerationMetricCalculator do
     # basic test, suite will be expanded to focus on single features
     # for now, this test will allow to safely refactor code
     it "returns hash with proper format" do
-      expect(subject.generation_metrics).to eq good_luck_and_have_fun
+      expect(subject.generation_metrics[:grouping_parameter]).to eq good_luck_and_have_fun[:grouping_parameter]
+      expect(subject.generation_metrics["gene1"]).to eq good_luck_and_have_fun["gene1"]
+      expect(subject.generation_metrics["gene2"]).to eq good_luck_and_have_fun["gene2"]
+      expect(subject.generation_metrics[:global]).to eq good_luck_and_have_fun[:global]
     end
   end
 end

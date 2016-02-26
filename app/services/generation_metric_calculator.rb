@@ -6,7 +6,7 @@ class GenerationMetricCalculator
   def initialize(forams, grouping_parameter, genes, precision, start: nil, stop: nil)
     @forams = forams
     @grouping_parameter = grouping_parameter
-    @genes = genes
+    @genes = genes.map { |name| name.to_s.camelize(:lower) }
     @start = start
     @stop = stop
     @precision = precision
@@ -14,185 +14,283 @@ class GenerationMetricCalculator
 
   def generation_metrics
     @metrics ||= begin
-      group_by(grouping_parameter)
-      { grouping_parameter: { name: grouping_parameter, values: generations.keys, sizes: generations.values.map(&:size) } }.
-        merge!(calculate_metrics)
+      {
+        grouping_parameter: grouping_parameter_hash,
+        global: extract_globals
+      }.merge!(genes_stats_hash)
     end
   end
 
   private
 
-  def group_by(param)
-    @generations = {}
+  def genes_stats_hash
+    @genes_stats_hash ||= begin
+      result = {}
+      genes.each_with_index do |name, index|
+        result["gene#{index + 1}"] = {
+          name: name,
+          effective:  { min: [], max: [], average: [], sum: [], count: [], standard_deviation: { plus_standard_deviation: [], minus_standard_deviation: [] } },
+          first_set:  { min: [], max: [], average: [], sum: [], count: [], standard_deviation: { plus_standard_deviation: [], minus_standard_deviation: [] } },
+          second_set: { min: [], max: [], average: [], sum: [], count: [], standard_deviation: { plus_standard_deviation: [], minus_standard_deviation: [] } }
+        }
+      end
 
-    forams.each do |foram|
-      generation = foram.send(param).to_i
-      @generations[generation] ||= []
-      @generations[generation] << foram
+      aggregated_stats.values.each do |generation_stats|
+        genes.each_with_index do |name, index|
+          gene_in_result = result["gene#{index + 1}"]
+
+          stats = generation_stats[name]
+          stats.each do |gene_type, stats_hash|
+            gene_type_in_result = gene_in_result[gene_type.to_sym]
+            [:min, :max, :average, :sum, :count].each do |stats_type|
+              value = stats_hash[stats_type.to_s] ? stats_hash[stats_type.to_s].round(precision) : nil
+              gene_type_in_result[stats_type.to_sym] << value
+            end
+
+            std_dev_place = gene_type_in_result[:standard_deviation]
+            standard_deviation = stats_hash["standard_deviation"]
+            average = stats_hash["average"]
+            if standard_deviation && average
+              std_dev_place[:plus_standard_deviation] << (average + standard_deviation).round(precision)
+              std_dev_place[:minus_standard_deviation] << (average - standard_deviation).round(precision)
+            else
+              std_dev_place[:plus_standard_deviation] << nil
+              std_dev_place[:minus_standard_deviation] << nil
+            end
+          end
+        end
+      end
+
+      result
     end
-    @generations = @generations.sort.to_h
   end
 
-  def calculate_metrics
-    metrics_hash = {}
-    globals = {}
-    genes_hash = {}
-
-    @generations.each do |number, forams|
-      metrics_hash[number] = generation_metrics_hash(forams)
-    end
-
-    with_unpacked_metrics_hash(metrics_hash) do |unpacked_metrics, sizes_hash|
-      genes_hash = unpacked_metrics
-      globals = calculate_globals(unpacked_metrics, sizes_hash)
-    end
-
-    genes_hash.merge!(globals)
+  def grouping_parameter_hash
+    {
+      name:   grouping_parameter,
+      values: aggregated_stats.keys,
+      sizes:  aggregated_stats.values.map { |h| h["size"] },
+    }
   end
 
-  def generation_metrics_hash(forams)
-    generation_hash = hash_with_initial_values(forams)
-    fill_with_attributes_dependent_on_each_foram(generation_hash, forams)
-    fill_with_attributes_dependent_on_whole_generation(generation_hash, forams)
+  def aggregated_stats
+    @aggregated_stats ||= begin
+      map = %Q{
+        function() {
+          emit(
+            this.#{grouping_parameter.to_s.camelize(:lower)},
+            {
+              size: 1,
+              #{genes_emit_hash_elements}
+            }
+          );
+        }
+      }
 
-    generation_hash
+      reduce = %Q{
+        function(key, values) {
+          var result = {};
+
+          var size = 0;
+          values.forEach(function(value) {
+            size += value.size;
+          });
+          result.size = size;
+
+          #{genes_result_hash_elements_agregation_string}
+
+          return result;
+        }
+      }
+
+      finalize = %Q{
+        function(key, reducedVal) {
+          var variance = 0;
+          var average = 0;
+
+          #{genes_finalize_string}
+
+          return reducedVal;
+        }
+      }
+
+
+      result = forams.map_reduce(map, reduce).finalize(finalize).out(inline: true)
+      result = Hash[result.map(&:values).map(&:flatten)]
+    end
   end
 
-  def hash_with_initial_values(forams)
+  def genes_emit_hash_elements
+    hash_elements = genes.map { |name| single_gene_emit_hash_elements(name) }
+    hash_elements.join(",\n")
+  end
+
+  def single_gene_emit_hash_elements(name)
+    %Q{
+      #{name} : {
+        effective: {
+          count: this.genotype.#{name}[0] != null ? 1 : 0,
+          sum: this.genotype.#{name}[0] || 0,
+          sum_of_squares: this.genotype.#{name}[0] != null ? this.genotype.#{name}[0] * this.genotype.#{name}[0] : 0,
+          min: this.genotype.#{name}[0],
+          max: this.genotype.#{name}[0]
+        },
+        first_set: {
+          count: this.genotype.#{name}[1] != null ? 1 : 0,
+          sum: this.genotype.#{name}[1] || 0,
+          sum_of_squares: this.genotype.#{name}[1] != null ? this.genotype.#{name}[1] * this.genotype.#{name}[1] : 0,
+          min: this.genotype.#{name}[1],
+          max: this.genotype.#{name}[1]
+        },
+        second_set: {
+          count: this.genotype.#{name}[2] != null ? 1 : 0,
+          sum: this.genotype.#{name}[2] || 0,
+          sum_of_squares: this.genotype.#{name}[2] != null ? this.genotype.#{name}[2] * this.genotype.#{name}[2] : 0,
+          min: this.genotype.#{name}[2],
+          max: this.genotype.#{name}[2]
+        }
+      }
+    }
+  end
+
+  def genes_finalize_string
+    hash_elements = genes.map { |name| single_gene_finalize_string(name) }
+    hash_elements.join("\n")
+  end
+
+  def single_gene_finalize_string(name)
+    %Q{
+      var #{name}_hash = reducedVal.#{name};
+
+      if(#{name}_hash.effective.count > 0) {
+        average = #{name}_hash.effective.sum / #{name}_hash.effective.count;
+        #{name}_hash.effective.average = average;
+
+        variance = (#{name}_hash.effective.sum_of_squares / #{name}_hash.effective.count) - average * average
+        #{name}_hash.effective.standard_deviation = Math.sqrt(Math.abs(variance));
+      }
+
+      if(#{name}_hash.first_set.count > 0) {
+        average = #{name}_hash.first_set.sum / #{name}_hash.first_set.count;
+        #{name}_hash.first_set.average = average;
+
+        variance = (#{name}_hash.first_set.sum_of_squares / #{name}_hash.first_set.count) - average * average
+        #{name}_hash.first_set.standard_deviation = Math.sqrt(Math.abs(variance));
+      }
+
+      if(#{name}_hash.second_set.count > 0) {
+        average = #{name}_hash.second_set.sum / #{name}_hash.second_set.count;
+        #{name}_hash.second_set.average = average;
+
+        variance = (#{name}_hash.second_set.sum_of_squares / #{name}_hash.second_set.count) - average * average
+        #{name}_hash.second_set.standard_deviation = Math.sqrt(Math.abs(variance));
+      }
+
+      reducedVal.#{name} = #{name}_hash;
+    }
+  end
+
+  def genes_result_hash_elements_agregation_string
+    hash_elements = genes.map { |name| single_gene_result_hash_elements_agregation_string(name) }
+    hash_elements.join("\n")
+  end
+
+  def single_gene_result_hash_elements_agregation_string(name)
+    %Q{
+      var #{name} = {
+        effective: {
+          count: 0,
+          sum: 0,
+          sum_of_squares: 0,
+          min: null,
+          max: null
+        },
+        first_set: {
+          count: 0,
+          sum: 0,
+          sum_of_squares: 0,
+          min: null,
+          max: null
+        },
+        second_set: {
+          count: 0,
+          sum: 0,
+          sum_of_squares: 0,
+          min: null,
+          max: null
+        }
+      };
+
+      values.forEach(function(value) {
+        var gene_values = value.#{name};
+
+        #{name}.effective.count += gene_values.effective.count;
+        #{name}.effective.sum += gene_values.effective.sum;
+        #{name}.effective.sum_of_squares += gene_values.effective.sum_of_squares;
+
+        if(#{name}.effective.min == null || gene_values.effective.min != null && #{name}.effective.min > gene_values.effective.min) {
+          #{name}.effective.min = gene_values.effective.min;
+        }
+
+        if(#{name}.effective.max == null || gene_values.effective.max != null && #{name}.effective.max < gene_values.effective.max) {
+          #{name}.effective.max = gene_values.effective.max;
+        }
+
+        #{name}.first_set.count += gene_values.first_set.count;
+        #{name}.first_set.sum += gene_values.first_set.sum;
+        #{name}.first_set.sum_of_squares += gene_values.first_set.sum_of_squares;
+
+        if(#{name}.first_set.min == null || gene_values.first_set.min != null && #{name}.first_set.min > gene_values.first_set.min) {
+          #{name}.first_set.min = gene_values.first_set.min;
+        }
+
+        if(#{name}.first_set.max == null || gene_values.first_set.max != null && #{name}.first_set.max < gene_values.first_set.max) {
+          #{name}.first_set.max = gene_values.first_set.max;
+        }
+
+        #{name}.second_set.count += gene_values.second_set.count;
+        #{name}.second_set.sum += gene_values.second_set.sum;
+        #{name}.second_set.sum_of_squares += gene_values.second_set.sum_of_squares;
+
+        if(#{name}.second_set.min == null || gene_values.second_set.min != null && #{name}.second_set.min > gene_values.second_set.min) {
+          #{name}.second_set.min = gene_values.second_set.min;
+        }
+
+        if(#{name}.second_set.max == null || gene_values.second_set.max != null && #{name}.second_set.max < gene_values.second_set.max) {
+          #{name}.second_set.max = gene_values.second_set.max;
+        }
+      });
+
+      result.#{name} = #{name};
+    }
+
+
+  end
+
+  def extract_globals
     result = {}
 
-    genes.each do |attribute|
-      result[attribute] = {}
-      ATTRIBUTE_TYPES.each do |type|
-        value = forams.first.genotype.send(attribute).send(type)
-        result[attribute][type] = { min: value, max: value, sum: 0, sum_of_squares: 0, size: 0 }
+    genes.each_with_index do |name, index|
+      result[name] = {
+        effective: {},
+        first_set: {},
+        second_set: {}
+      }
+
+      [:effective, :first_set, :second_set].each do |gene_type|
+        [:min, :max].each do |stat_type|
+          value = genes_stats_hash["gene#{index + 1}"][gene_type][stat_type].compact.send(stat_type)
+          value = value ? value.round(precision) : nil
+          result[name][gene_type][stat_type] = value
+        end
+
+        sum = genes_stats_hash["gene#{index + 1}"][gene_type].delete(:sum).compact.sum.round(precision)
+        count = genes_stats_hash["gene#{index + 1}"][gene_type].delete(:count).compact.sum.round(precision)
+
+        result[name][gene_type][:average] = (sum / count).round(precision) if count > 0
       end
     end
 
     result
-  end
-
-  def fill_with_attributes_dependent_on_each_foram(generation_hash, forams)
-    forams.each do |foram|
-      genotype = foram.genotype
-      genes.each do |attribute|
-        ATTRIBUTE_TYPES.each do |type|
-          value = genotype.send(attribute).send(type)
-          if value
-            attribute_hash = generation_hash[attribute][type]
-            attribute_hash[:size] += 1
-
-            attribute_hash[:min] = value if attribute_hash[:min].nil? || value < attribute_hash[:min]
-            attribute_hash[:max] = value if attribute_hash[:max].nil? || value > attribute_hash[:max]
-            attribute_hash[:sum] += value
-            attribute_hash[:sum_of_squares] += value * value
-          end
-        end
-      end
-    end
-  end
-
-  def fill_with_attributes_dependent_on_whole_generation(generation_hash, forams)
-    genes.each do |attribute|
-      ATTRIBUTE_TYPES.each do |type|
-        attribute_hash = generation_hash[attribute][type]
-
-        size = attribute_hash[:size]
-        if size > 0
-          average = (attribute_hash[:sum].to_f / size)
-          attribute_hash[:average] = average
-          variance = (attribute_hash[:sum_of_squares].to_f / size) - average * average
-          # Due to floting point errors while subtracting very small numbers variance can be negative which is incorrect
-          standard_deviation = Math.sqrt(variance) rescue 0
-          attribute_hash[:plus_standard_deviation] = average + standard_deviation
-          attribute_hash[:minus_standard_deviation] = average - standard_deviation
-        else
-          attribute_hash[:average] = nil
-          attribute_hash[:plus_standard_deviation] = nil
-          attribute_hash[:minus_standard_deviation] = nil
-        end
-
-        attribute_hash.delete(:sum)
-        attribute_hash.delete(:sum_of_squares)
-      end
-    end
-  end
-
-  def with_unpacked_metrics_hash(metrics_hash)
-    result = {}
-    sizes_hash = {}
-
-    genes.each_with_index do |gene, index|
-      gene_hash = { name: gene }
-      sizes_hash[gene] = {}
-
-      ATTRIBUTE_TYPES.each do |attribute_type|
-        type_hash = {}
-        sizes_hash[gene][attribute_type] = {}
-
-        calculated_statistics = %i(min max average plus_standard_deviation minus_standard_deviation)
-        calculated_statistics.each do |statistic|
-          statistic_array = []
-          metrics_hash.keys.each do |generation_number|
-            size = metrics_hash[generation_number][gene][attribute_type][:size]
-            sizes_hash[gene][attribute_type][generation_number] = size
-
-            value = metrics_hash[generation_number][gene][attribute_type][statistic]
-            value = value.round(precision) if value
-            statistic_array << value
-          end
-          if %i(plus_standard_deviation minus_standard_deviation).include?(statistic)
-            type_hash[:standard_deviation] ||= {}
-            type_hash[:standard_deviation][statistic] = statistic_array
-          else
-            type_hash[statistic] = statistic_array
-          end
-        end
-
-        gene_hash[attribute_type] = type_hash
-      end
-
-      result["gene#{index+1}"] = gene_hash
-    end
-
-    yield result, sizes_hash
-  end
-
-  def calculate_globals(metrics_hash, sizes_hash)
-    globals_hash = {}
-
-    genes.each do |gene|
-      globals_hash[gene] = {}
-      gene_key = metrics_hash.keys.select { |key| metrics_hash[key][:name] == gene }.first
-      ATTRIBUTE_TYPES.each do |type|
-
-        globals_hash[gene][type] = {}
-
-        type_values_hash = metrics_hash[gene_key][type]
-        globals_hash[gene][type][:min] = type_values_hash[:min].compact.min
-        globals_hash[gene][type][:max] = type_values_hash[:max].compact.max
-
-        sum_of_values = 0
-        sum_of_sizes = 0
-
-        sizes_array = sizes_hash[gene][type].values
-
-        type_values_hash[:average].each_with_index do |average_value, index|
-          size = sizes_array[index]
-          if size > 0
-            sum_of_values += average_value * size
-            sum_of_sizes += size
-          end
-        end
-
-        if sum_of_sizes > 0
-          globals_hash[gene][type][:average] = (sum_of_values.to_f / sum_of_sizes).round(precision)
-        else
-          globals_hash[gene][type][:average] = nil
-        end
-      end
-    end
-
-    { global: globals_hash }
   end
 end
