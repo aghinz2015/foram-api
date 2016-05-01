@@ -3,6 +3,8 @@ module V1
     include ActionController::MimeResponds
     include ForamScoping
 
+    STORE_PERIOD = 5.minutes
+
     before_action :set_foram, only: :show
 
     def index
@@ -28,7 +30,8 @@ module V1
     end
 
     def attribute_names
-      render json: Foram.all_attribute_names(user: current_user)
+      attribute_names = retrieve_attribute_names
+      render json: attribute_names
     end
 
     def attribute_stats
@@ -39,7 +42,8 @@ module V1
     end
 
     def simulation_starts
-      render json: { simulation_starts: Foram.for_user(current_user).pluck(:simulationStart).uniq }
+      simulation_starts = retrieve_simulation_starts
+      render json: { simulation_starts: simulation_starts }
     end
 
     private
@@ -55,6 +59,18 @@ module V1
     def foram_filter_params
       attributes = ForamFilter.attributes_map(Foram.for_user(current_user)).keys
       params.slice(*attributes).to_hash
+    end
+
+    def retrieve_simulation_starts
+      Rails.cache.fetch("#{current_user.active_mongo_session_id} simulation_starts", expires_in: STORE_PERIOD) do
+        Foram.for_user(current_user).pluck(:simulationStart).uniq.to_a
+      end
+    end
+
+    def retrieve_attribute_names
+      Rails.cache.fetch("#{current_user.active_mongo_session_id} attribute_names", expires_in: STORE_PERIOD) do
+        Foram.all_attribute_names(user: current_user).to_a
+      end
     end
   end
 end

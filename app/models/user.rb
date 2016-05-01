@@ -33,6 +33,10 @@ class User
     @active_mongo_session ||= mongo_sessions.active.last
   end
 
+  def active_mongo_session_id
+    @active_mongo_session_id ||= active_mongo_session.id.to_s
+  end
+
   private
 
   def generate_authentication_token
