@@ -48,5 +48,7 @@ module ForamApi
     config.exceptions_app = routes
 
     config.cache_store = :redis_store, Rails.application.config_for(:redis)
+
+    config.middleware.use "Mongoid::QueryCache::Middleware"
   end
 end
