@@ -11,6 +11,10 @@ class DescendantsFetcher
     descendants_hash(foram, level)
   end
 
+  def children_count(foram_id)
+    forams.or({ firstParentId: foram_id }, { secondParentId: foram_id }).count
+  end
+
   private
 
   def children_array(foram)

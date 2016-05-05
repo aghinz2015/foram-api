@@ -46,6 +46,11 @@ module V1
       render json: { simulation_starts: simulation_starts }
     end
 
+    def children_count
+      count = descendants_fetcher.children_count(params[:id])
+      render json: { children_count: count }
+    end
+
     private
 
     def set_foram
@@ -71,6 +76,10 @@ module V1
       Rails.cache.fetch("#{current_user.active_mongo_session_id} attribute_names", expires_in: STORE_PERIOD) do
         Foram.all_attribute_names(user: current_user).to_a
       end
+    end
+
+    def descendants_fetcher
+      DescendantsFetcher.new foram_scope
     end
   end
 end

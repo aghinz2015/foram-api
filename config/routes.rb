@@ -14,6 +14,9 @@ Rails.application.routes.draw do
         get :attribute_stats
         get :simulation_starts
       end
+      member do
+        get :children_count
+      end
       resources :descendants, only: :index
     end
     resources :generations, only: :index
