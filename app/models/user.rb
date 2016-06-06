@@ -34,7 +34,7 @@ class User
   end
 
   def active_mongo_session_id
-    @active_mongo_session_id ||= active_mongo_session.id.to_s
+    active_mongo_session.id.to_s if active_mongo_session
   end
 
   private
