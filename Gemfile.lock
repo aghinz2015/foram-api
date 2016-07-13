@@ -80,7 +80,7 @@ GEM
       mime-types (>= 1.16, < 3)
       nokogiri (~> 1.5)
       rails (>= 3, < 5)
-    database_cleaner (1.4.1)
+    database_cleaner (1.5.3)
     diff-lcs (1.2.5)
     dotenv (2.0.2)
     dotenv-rails (2.0.2)
@@ -135,11 +135,7 @@ GEM
       slop (~> 3.4)
     pry-rails (0.3.4)
       pry (>= 0.9.10)
-<<<<<<< 4a7318f06fd7876372a576986d416175ee641dc5
     puma (3.6.0)
-=======
-    puma (3.4.0)
->>>>>>> Bump puma version
     rack (1.6.4)
     rack-cors (0.4.0)
     rack-test (0.6.3)
