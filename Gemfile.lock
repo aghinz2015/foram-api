@@ -135,9 +135,8 @@ GEM
       slop (~> 3.4)
     pry-rails (0.3.4)
       pry (>= 0.9.10)
-    puma (2.11.2)
-      rack (>= 1.1, < 2.0)
-    rack (1.6.1)
+    puma (3.6.0)
+    rack (1.6.4)
     rack-cors (0.4.0)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -270,5 +269,8 @@ DEPENDENCIES
   spring
   timecop
 
+RUBY VERSION
+   ruby 2.2.1p85
+
 BUNDLED WITH
-   1.10.6
+   1.12.5
