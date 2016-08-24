@@ -68,7 +68,7 @@ module V1
 
     def retrieve_simulation_starts
       Rails.cache.fetch("#{current_user.active_mongo_session_id} simulation_starts", expires_in: STORE_PERIOD) do
-        Foram.for_user(current_user).pluck(:simulationStart).uniq.to_a
+        Foram.for_user(current_user).distinct(:simulationStart)
       end
     end
 
